@@ -565,6 +565,32 @@ body.light .detail-item {
     
 }
 
+        .reply-history {
+    margin-top: 14px;
+    padding: 16px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    height: auto;
+    overflow: visible;
+}
+
+.reply-history > .detail-label {
+    margin-bottom: 10px;
+}
+
+.reply-history > div:not(.detail-label) {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+}
+
 body.light .detail-description {
     background:
         rgba(0,0,0,.04);
@@ -1518,12 +1544,8 @@ body.light .reply-section textarea {
         if (replies.length > 0) {
 
             replyHtml = `
-
-                <div class="detail-description">
-
-                    <div class="detail-label">
-                        💬 Reply History
-                    </div>
+    <div class="reply-history">
+        <div class="detail-label">💬 Reply History</div>
 
 
                     ${replies.map((reply, i) => `
