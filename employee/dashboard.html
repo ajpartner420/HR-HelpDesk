@@ -174,6 +174,173 @@
             background: rgba(0,198,255,.15);
         }
 
+/* NOTIFICATIONS */
+
+.notification-wrapper {
+    position: relative;
+}
+
+.notification-btn {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+
+    top: -5px;
+    right: -5px;
+
+    min-width: 19px;
+    height: 19px;
+
+    padding: 0 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #ff4d6d;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    border: 2px solid #07111f;
+}
+
+.notification-panel {
+    position: absolute;
+
+    top: 55px;
+    right: 0;
+
+    width: 350px;
+    max-width: calc(100vw - 40px);
+
+    padding: 0;
+
+    border-radius: 16px;
+
+    background: rgba(10,25,45,.95);
+    border: 1px solid rgba(255,255,255,.12);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.35);
+
+    z-index: 1000;
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.notification-panel.show {
+    display: block;
+}
+
+.notification-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.mark-read {
+    border: none;
+    background: transparent;
+
+    color: #00c6ff;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.notification-item {
+    padding: 13px 15px;
+
+    border-bottom: 1px solid rgba(255,255,255,.06);
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.notification-item:hover {
+    background: rgba(0,198,255,.08);
+}
+
+.notification-item.unread {
+    background: rgba(0,198,255,.06);
+}
+
+.notification-title {
+    font-size: 13px;
+    font-weight: bold;
+
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    font-size: 12px;
+    line-height: 1.4;
+
+    opacity: .7;
+}
+
+.notification-time {
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    opacity: .45;
+}
+
+.no-notifications {
+    padding: 30px 15px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    opacity: .5;
+}
+
+body.light .notification-panel {
+    background: rgba(255,255,255,.95);
+    border-color: rgba(0,0,0,.08);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.15);
+}
+
+body.light .notification-badge {
+    border-color: #eef7ff;
+}
+
+@media(max-width:650px) {
+
+    .notification-panel {
+        position: fixed;
+
+        top: 75px;
+        right: 18px;
+        left: 18px;
+
+        width: auto;
+        max-width: none;
+    }
+
+}
+        
         /* CARDS */
 
         .stats {
@@ -615,9 +782,55 @@
                     🌙
                 </button>
 
-                <button class="icon-btn">
-                    🔔
-                </button>
+                <div class="notification-wrapper">
+
+    <button
+        class="icon-btn notification-btn"
+        onclick="toggleNotifications()"
+    >
+        🔔
+
+        <span
+            id="notificationBadge"
+            class="notification-badge"
+            style="display:none;"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <div
+        id="notificationPanel"
+        class="notification-panel"
+    >
+
+        <div class="notification-header">
+
+            <strong>🔔 Notifications</strong>
+
+            <button
+                onclick="markNotificationsRead()"
+                class="mark-read"
+            >
+                Mark all read
+            </button>
+
+        </div>
+
+
+        <div id="notificationList">
+
+            <div class="no-notifications">
+                No new notifications
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
             </div>
 
@@ -1086,6 +1299,343 @@
         window.location.href = "../index.html";
     }
 
+    /* =========================
+   NOTIFICATIONS
+========================= */
+
+function getNotifications() {
+
+    const tickets =
+        JSON.parse(
+            localStorage.getItem("hr-tickets") || "[]"
+        );
+
+    const notifications = [];
+
+
+    tickets.forEach(ticket => {
+
+        /* ADMIN REPLIES */
+
+        let replies = [];
+
+        if (Array.isArray(ticket.adminReplies)) {
+
+            replies = ticket.adminReplies;
+
+        }
+        else if (ticket.adminReply) {
+
+            replies = [
+                {
+                    text: ticket.adminReply,
+                    createdAt: ticket.adminReplyAt || ""
+                }
+            ];
+
+        }
+
+
+        replies.forEach((reply, index) => {
+
+            notifications.push({
+
+                id:
+                    ticket.id +
+                    "-reply-" +
+                    index,
+
+                title:
+                    "💬 Admin replied",
+
+                message:
+                    ticket.subject +
+                    " — " +
+                    (reply.text || ""),
+
+                time:
+                    reply.createdAt || "",
+
+                type:
+                    "reply"
+
+            });
+
+        });
+
+
+        /* RESOLVED */
+
+        if (
+            String(ticket.status).toLowerCase()
+            === "resolved"
+        ) {
+
+            notifications.push({
+
+                id:
+                    ticket.id +
+                    "-resolved",
+
+                title:
+                    "✅ Ticket Resolved",
+
+                message:
+                    ticket.subject +
+                    " has been resolved.",
+
+                time:
+                    ticket.updatedAt ||
+                    ticket.createdAt ||
+                    "",
+
+                type:
+                    "resolved"
+
+            });
+
+        }
+
+    });
+
+
+    /* ANNOUNCEMENTS */
+
+    notifications.push({
+
+        id: "announcement-policy",
+
+        title: "📢 New HR Policy",
+
+        message:
+            "Updated leave policy is now available.",
+
+        time: "Today",
+
+        type: "announcement"
+
+    });
+
+
+    notifications.push({
+
+        id: "announcement-holiday",
+
+        title: "🎉 Holiday Notice",
+
+        message:
+            "Check the upcoming holiday schedule.",
+
+        time: "2 days ago",
+
+        type: "announcement"
+
+    });
+
+
+    return notifications;
+
+}
+
+
+function getReadNotifications() {
+
+    return JSON.parse(
+        localStorage.getItem(
+            "hr-read-notifications"
+        ) || "[]"
+    );
+
+}
+
+
+function saveReadNotifications(ids) {
+
+    localStorage.setItem(
+        "hr-read-notifications",
+        JSON.stringify(ids)
+    );
+
+}
+
+
+function loadNotifications() {
+
+    const notifications =
+        getNotifications();
+
+    const readIds =
+        getReadNotifications();
+
+
+    const unread =
+        notifications.filter(
+            notification =>
+                !readIds.includes(notification.id)
+        );
+
+
+    const badge =
+        document.getElementById(
+            "notificationBadge"
+        );
+
+
+    if (unread.length > 0) {
+
+        badge.textContent =
+            unread.length > 99
+            ? "99+"
+            : unread.length;
+
+        badge.style.display =
+            "flex";
+
+    }
+    else {
+
+        badge.style.display =
+            "none";
+
+    }
+
+
+    const list =
+        document.getElementById(
+            "notificationList"
+        );
+
+
+    if (notifications.length === 0) {
+
+        list.innerHTML = `
+            <div class="no-notifications">
+                No notifications
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        notifications
+            .slice()
+            .reverse()
+            .map(notification => {
+
+                const unreadClass =
+                    readIds.includes(
+                        notification.id
+                    )
+                    ? ""
+                    : "unread";
+
+
+                return `
+
+                    <div
+                        class="notification-item ${unreadClass}"
+                        onclick="openNotification('${escapeHtml(
+                            notification.id
+                        )}')"
+                    >
+
+                        <div class="notification-title">
+
+                            ${escapeHtml(
+                                notification.title
+                            )}
+
+                        </div>
+
+
+                        <div class="notification-message">
+
+                            ${escapeHtml(
+                                notification.message
+                            )}
+
+                        </div>
+
+
+                        <div class="notification-time">
+
+                            ${escapeHtml(
+                                notification.time
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+}
+
+
+function toggleNotifications() {
+
+    const panel =
+        document.getElementById(
+            "notificationPanel"
+        );
+
+    panel.classList.toggle("show");
+
+    loadNotifications();
+
+}
+
+
+function markNotificationsRead() {
+
+    const notifications =
+        getNotifications();
+
+    const ids =
+        notifications.map(
+            notification =>
+                notification.id
+        );
+
+    saveReadNotifications(ids);
+
+    loadNotifications();
+
+}
+
+
+function openNotification(id) {
+
+    const readIds =
+        getReadNotifications();
+
+
+    if (!readIds.includes(id)) {
+
+        readIds.push(id);
+
+        saveReadNotifications(
+            readIds
+        );
+
+    }
+
+
+    loadNotifications();
+
+}
+
+
+/* LOAD NOTIFICATIONS */
+
+loadNotifications();
+    
 </script>
 
 </body>
