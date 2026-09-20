@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Raise Ticket | HR Helpdesk</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: linear-gradient(135deg,#07111f,#0b2940,#06101e);
+        }
+
+        body.light {
+            color: #172033;
+            background: linear-gradient(135deg,#eef7ff,#dceeff,#f7fbff);
+        }
+
+        .orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: .3;
+            z-index: -1;
+        }
+
+        .orb1 {
+            background: #00c6ff;
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb2 {
+            background: #0066ff;
+            right: -100px;
+            bottom: -100px;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back {
+            color: #00c6ff;
+            text-decoration: none;
+        }
+
+        .theme {
+            width: 45px;
+            height: 45px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 12px;
+            background: rgba(255,255,255,.08);
+            color: inherit;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .glass {
+            padding: 30px;
+            border-radius: 22px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.14);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,.2);
+        }
+
+        body.light .glass,
+        body.light .theme {
+            background: rgba(255,255,255,.6);
+            border-color: rgba(0,0,0,.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            opacity: .7;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.15);
+            background: rgba(255,255,255,.07);
+            color: inherit;
+            outline: none;
+        }
+
+        body.light input,
+        body.light select,
+        body.light textarea {
+            background: rgba(255,255,255,.7);
+            color: #172033;
+            border-color: rgba(0,0,0,.1);
+        }
+
+        select option {
+            color: #111;
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg,#00c6ff,#0072ff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .success {
+            display: block;
+            background: rgba(56,227,139,.15);
+            color: #38e38b;
+        }
+
+        @media(max-width:600px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .glass {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="page">
+
+    <div class="topbar">
+        <a class="back" href="dashboard.html">← Dashboard</a>
+
+        <button class="theme" onclick="toggleTheme()" id="themeBtn">
+            ☀️
+        </button>
+    </div>
+
+    <div class="glass">
+
+        <h1>🎫 Raise New Ticket</h1>
+
+        <p class="subtitle">
+            Tell us about your HR related issue and our team will help you.
+        </p>
+
+        <div id="message" class="message"></div>
+
+        <form id="ticketForm">
+
+            <div class="form-group">
+
+                <label for="subject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    placeholder="Example: Salary Slip Issue"
+                    required
+                >
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option>Payroll</option>
+                        <option>Leave</option>
+                        <option>Attendance</option>
+                        <option>Employee Benefits</option>
+                        <option>Recruitment</option>
+                        <option>IT / Access</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="priority">
+                        Priority
+                    </label>
+
+                    <select id="priority" required>
+
+                        <option value="">
+                            Select Priority
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Describe your issue in detail..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button class="submit" type="submit">
+                🚀 Submit Ticket
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* LOGIN CHECK */
+
+    if (localStorage.getItem("hr-user-role") !== "employee") {
+        window.location.href = "../index.html";
+    }
+
+
+    /* THEME */
+
+    const savedTheme = localStorage.getItem("hr-theme");
+
+    if (savedTheme === "light") {
+        document.body.classList.add("light");
+        document.getElementById("themeBtn").textContent = "🌙";
+    }
+
+
+    function toggleTheme() {
+
+        document.body.classList.toggle("light");
+
+        const light =
+            document.body.classList.contains("light");
+
+        localStorage.setItem(
+            "hr-theme",
+            light ? "light" : "dark"
+        );
+
+        document.getElementById("themeBtn").textContent =
+            light ? "🌙" : "☀️";
+    }
+
+
+    /* CREATE TICKET */
+
+    document
+        .getElementById("ticketForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const tickets =
+                JSON.parse(
+                    localStorage.getItem("hr-tickets") || "[]"
+                );
+
+
+            const ticketNumber =
+                Date.now().toString().slice(-6);
+
+
+            const ticket = {
+
+                id: "HR-" + ticketNumber,
+
+                subject:
+                    document.getElementById("subject").value.trim(),
+
+                category:
+                    document.getElementById("category").value,
+
+                priority:
+                    document.getElementById("priority").value,
+
+                description:
+                    document.getElementById("description").value.trim(),
+
+                status: "Open",
+
+                createdAt:
+                    new Date().toLocaleString()
+
+            };
+
+
+            tickets.unshift(ticket);
+
+
+            localStorage.setItem(
+                "hr-tickets",
+                JSON.stringify(tickets)
+            );
+
+
+            document.getElementById("message").textContent =
+                "✅ Ticket created successfully: " + ticket.id;
+
+            document.getElementById("message")
+                .className = "message success";
+
+
+            document.getElementById("ticketForm").reset();
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "tickets.html";
+
+            }, 1200);
+
+        });
+
+</script>
+
+</body>
+</html>
