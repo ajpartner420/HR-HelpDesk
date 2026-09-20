@@ -630,7 +630,56 @@ body.light .notification-badge {
         body.light .announcement-icon {
             background: rgba(0,114,255,.08);
         }
-        
+        /* Dynamic Announcements */
+
+.announcement-empty {
+    text-align: center;
+    padding: 25px 10px;
+    opacity: .55;
+    font-size: 13px;
+}
+
+.announcement-new {
+    position: relative;
+}
+
+.announcement-new-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 7px;
+    padding: 3px 7px;
+    border-radius: 20px;
+    background: rgba(255,77,109,.14);
+    color: #ff4d6d;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.announcement-content strong {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.announcement-count {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(0,198,255,.12);
+    color: #00c6ff;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+body.light .announcement-count {
+    background: rgba(0,114,255,.08);
+    color: #0072ff;
+}
         
         /* MOBILE */
 
@@ -956,67 +1005,16 @@ body.light .notification-badge {
                 <!-- ANNOUNCEMENTS -->
 
                 <div class="card announcements-card">
-
     <div class="card-header">
-
         <h2>📢 Announcements</h2>
-
-        <span class="announcement-count">
-            2 New
-        </span>
-
+        <span id="announcementCount" class="announcement-count">0</span>
     </div>
 
-
-    <div class="announcement">
-
-        <div class="announcement-icon">
-            📢
+    <div id="employeeAnnouncements">
+        <div style="text-align:center;padding:25px 10px;opacity:.6;">
+            Loading announcements...
         </div>
-
-        <div class="announcement-content">
-
-            <strong>
-                New HR Policy
-            </strong>
-
-            <p>
-                Updated leave policy is now available.
-            </p>
-
-            <small>
-                Today
-            </small>
-
-        </div>
-
     </div>
-
-
-    <div class="announcement">
-
-        <div class="announcement-icon">
-            🎉
-        </div>
-
-        <div class="announcement-content">
-
-            <strong>
-                Holiday Notice
-            </strong>
-
-            <p>
-                Check the upcoming holiday schedule.
-            </p>
-
-            <small>
-                2 days ago
-            </small>
-
-        </div>
-
-    </div>
-
 </div>
         </section>
 
@@ -1064,6 +1062,95 @@ body.light .notification-badge {
 
         /* LOAD EMPLOYEE TICKETS */
 
+    function getEmployeeAnnouncements() {
+    return JSON.parse(
+        localStorage.getItem("hr-announcements") || "[]"
+    );
+}
+
+function loadEmployeeAnnouncements() {
+
+    const announcements = getEmployeeAnnouncements();
+
+    const container =
+        document.getElementById("employeeAnnouncements");
+
+    const count =
+        document.getElementById("announcementCount");
+
+    if (!container || !count) return;
+
+    count.textContent = announcements.length;
+
+    if (announcements.length === 0) {
+
+        container.innerHTML = `
+            <div class="announcement-empty">
+                📢
+                <div style="margin-top:8px;">
+                    No announcements yet
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    /*
+       Latest announcement पहले दिखेगा
+    */
+    const latestAnnouncements =
+        announcements.slice().reverse();
+
+    container.innerHTML =
+        latestAnnouncements.map((announcement, index) => {
+
+            const isNew = index === 0;
+
+            return `
+                <div class="announcement ${isNew ? "announcement-new" : ""}">
+
+                    <div class="announcement-icon">
+                        ${escapeHtml(announcement.icon || "📢")}
+                    </div>
+
+                    <div class="announcement-content">
+
+                        <strong>
+                            ${escapeHtml(
+                                announcement.title ||
+                                "Announcement"
+                            )}
+
+                            ${isNew ? `
+                                <span class="announcement-new-badge">
+                                    NEW
+                                </span>
+                            ` : ""}
+                        </strong>
+
+                        <p>
+                            ${escapeHtml(
+                                announcement.message || ""
+                            )}
+                        </p>
+
+                        <small>
+                            ${escapeHtml(
+                                announcement.createdAt || ""
+                            )}
+                        </small>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+loadEmployeeAnnouncements();
+    
     function loadDashboardTickets() {
 
         const tickets =
@@ -1401,37 +1488,21 @@ function getNotifications() {
 
     /* ANNOUNCEMENTS */
 
-    notifications.push({
+    const announcements = getEmployeeAnnouncements();
 
-        id: "announcement-policy",
-
-        title: "📢 New HR Policy",
-
-        message:
-            "Updated leave policy is now available.",
-
-        time: "Today",
-
-        type: "announcement"
-
-    });
-
+announcements.forEach(announcement => {
 
     notifications.push({
-
-        id: "announcement-holiday",
-
-        title: "🎉 Holiday Notice",
-
-        message:
-            "Check the upcoming holiday schedule.",
-
-        time: "2 days ago",
-
+        id: "announcement-" + announcement.id,
+        title: (announcement.icon || "📢") + " " + (
+            announcement.title || "Announcement"
+        ),
+        message: announcement.message || "",
+        time: announcement.createdAt || "",
         type: "announcement"
-
     });
 
+});
 
     return notifications;
 
