@@ -206,6 +206,47 @@ body::after {
     box-shadow: 0 15px 35px rgba(0,198,255,.25);
 }
 
+ .profile-photo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.change-photo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 12px;
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background: rgba(0,198,255,.10);
+    border: 1px solid rgba(0,198,255,.18);
+
+    color: #00c6ff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.change-photo-btn:hover {
+    background: rgba(0,198,255,.18);
+    transform: translateY(-1px);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 50%;
+}   
+
 .profile-left h2 {
     font-size: 22px;
 }
@@ -584,9 +625,25 @@ body.light .cancel-btn {
 
             <div class="card profile-left">
 
-                <div class="avatar" id="avatar">
-                    E
-                </div>
+                <div class="profile-photo-wrapper">
+
+    <div class="avatar" id="avatar">
+        E
+    </div>
+
+    <label for="profilePhotoInput" class="change-photo-btn">
+        📷 Change Photo
+    </label>
+
+    <input
+        type="file"
+        id="profilePhotoInput"
+        accept="image/*"
+        style="display:none;"
+        onchange="changeProfilePhoto(event)"
+    >
+
+</div>
 
                 <h2 id="profileName">
                     Employee
@@ -998,6 +1055,78 @@ function getProfile() {
 }
 
 
+    /* PROFILE PHOTO */
+
+function changeProfilePhoto(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("❌ Please select an image file.");
+
+        return;
+
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        localStorage.setItem(
+            "hr-profile-photo",
+            e.target.result
+        );
+
+        loadProfilePhoto();
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function loadProfilePhoto() {
+
+    const photo =
+        localStorage.getItem("hr-profile-photo");
+
+    const avatar =
+        document.getElementById("avatar");
+
+    if (!avatar) {
+        return;
+    }
+
+    if (photo) {
+
+        avatar.innerHTML = `
+            <img
+                src="${photo}"
+                alt="Profile Photo"
+            >
+        `;
+
+    } else {
+
+        const profile = getProfile();
+
+        const firstLetter =
+            profile.name.trim().charAt(0).toUpperCase();
+
+        avatar.textContent =
+            firstLetter || "E";
+
+    }
+
+}
+    
+
 /* LOAD PROFILE */
 
 function loadProfile() {
@@ -1031,8 +1160,7 @@ function loadProfile() {
     const firstLetter =
         profile.name.trim().charAt(0).toUpperCase();
 
-    document.getElementById("avatar").textContent =
-        firstLetter || "E";
+    loadProfilePhoto();
 
 }
 
