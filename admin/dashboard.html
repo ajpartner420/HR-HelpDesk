@@ -581,6 +581,38 @@ body.light .detail-item {
     overflow: visible;
 }
 
+        .reply-box {
+    margin-top: 10px;
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.05);
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    height: auto;
+    min-height: 0;
+
+    overflow: visible;
+
+    display: block;
+}
+
+.reply-box > div {
+    height: auto;
+    min-height: 0;
+}
+
+.reply-box div {
+    height: auto;
+}
+
+body.light .reply-box {
+    background: rgba(0,0,0,.04);
+    border-color: rgba(0,0,0,.08);
+}
+
 .reply-history > .detail-label {
     margin-bottom: 10px;
 }
@@ -1550,15 +1582,7 @@ body.light .reply-section textarea {
 
                     ${replies.map((reply, i) => `
 
-                        <div
-                            style="
-                                margin-top:12px;
-                                padding:12px;
-                                border-radius:10px;
-                                background:rgba(255,255,255,.05);
-                                border:1px solid rgba(255,255,255,.07);
-                            "
-                        >
+                        <div class="reply-box">
 
                             <div
                                 style="
