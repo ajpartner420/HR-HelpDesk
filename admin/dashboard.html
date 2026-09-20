@@ -575,6 +575,87 @@ body.light .detail-description {
     }
 
 }
+
+        /* ADMIN REPLY */
+
+.reply-section {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    border-top:
+        1px solid rgba(255,255,255,.10);
+}
+
+.reply-title {
+    font-size: 15px;
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+.reply-section textarea {
+    width: 100%;
+    min-height: 110px;
+
+    resize: vertical;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    background:
+        rgba(255,255,255,.07);
+
+    color: inherit;
+
+    outline: none;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.reply-section textarea:focus {
+    border-color: #00c6ff;
+
+    box-shadow:
+        0 0 0 3px rgba(0,198,255,.10);
+}
+
+.reply-btn {
+    margin-top: 12px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #00c6ff;
+    color: #06101e;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.reply-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(0,198,255,.20);
+}
+
+body.light .reply-section textarea {
+    background:
+        rgba(255,255,255,.8);
+
+    border-color:
+        rgba(0,0,0,.10);
+}
         
         .empty {
             text-align: center;
@@ -959,9 +1040,27 @@ body.light .detail-description {
 
         </div>
 
-        <div
-            id="ticketDetails"
-        ></div>
+        <div id="ticketDetails"></div>
+
+<div class="reply-section">
+
+    <div class="reply-title">
+        💬 Admin Reply
+    </div>
+
+    <textarea
+        id="adminReply"
+        placeholder="Write your reply to the employee..."
+    ></textarea>
+
+    <button
+        class="reply-btn"
+        onclick="sendAdminReply()"
+    >
+        📤 Send Reply
+    </button>
+
+</div>
 
     </div>
 
@@ -1607,6 +1706,31 @@ function viewTicket(index) {
 
 }
 
+/* ============================
+   ADMIN REPLY
+============================ */
+
+function sendAdminReply() {
+
+    const reply =
+        document
+            .getElementById("adminReply")
+            .value
+            .trim();
+
+    if (!reply) {
+
+        alert("Please write a reply first.");
+
+        return;
+    }
+
+    alert(
+        "Reply box is ready.\n\nNext step will save this reply to the ticket."
+    );
+
+}
+    
 
 /* CLOSE MODAL */
 
