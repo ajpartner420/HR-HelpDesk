@@ -249,10 +249,8 @@ if (selectedRole === "employee") {
 
 } else {
 
-    showMessage(
-        "Admin login successful. Admin Panel will be available in Step 4.",
-        "success"
-    );
+    window.location.href =
+        "admin/dashboard.html";
 
 }
         } else {
