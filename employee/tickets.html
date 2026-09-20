@@ -133,6 +133,71 @@
             font-size: 12px;
         }
 
+
+                /* ADMIN REPLY HISTORY */
+
+        .reply-history {
+            margin-top: 18px;
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background: rgba(0,198,255,.06);
+            border: 1px solid rgba(0,198,255,.12);
+        }
+
+        .reply-history-title {
+            margin-bottom: 12px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            color: #00c6ff;
+        }
+
+        .reply-box {
+            padding: 12px;
+            margin-top: 10px;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        body.light .reply-history {
+            background: rgba(0,114,255,.05);
+            border-color: rgba(0,114,255,.12);
+        }
+
+        body.light .reply-box {
+            background: rgba(0,0,0,.03);
+            border-color: rgba(0,0,0,.08);
+        }
+
+        .reply-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: #00c6ff;
+            margin-bottom: 6px;
+        }
+
+        .reply-text {
+            font-size: 14px;
+            line-height: 1.5;
+
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .reply-time {
+            margin-top: 8px;
+
+            font-size: 11px;
+            opacity: .55;
+        }
+        
+
         .empty {
             text-align: center;
             padding: 60px 20px;
@@ -249,56 +314,147 @@
 
 
         container.innerHTML =
-            tickets.map(ticket => `
+            tickets.map(ticket => {
 
-                <div class="ticket">
+                /*
+                 * GET ADMIN REPLIES
+                 *
+                 * New system:
+                 * ticket.adminReplies[]
+                 *
+                 * Old ticket:
+                 * ticket.adminReply
+                 */
 
-                    <div class="ticket-top">
+                let replies = [];
 
-                        <div>
+                if (Array.isArray(ticket.adminReplies)) {
 
-                            <h3>
-                                ${escapeHtml(ticket.subject)}
-                            </h3>
+                    replies = ticket.adminReplies;
 
-                            <div class="ticket-id">
-                                ${ticket.id}
-                                •
-                                ${ticket.createdAt}
+                } else if (ticket.adminReply) {
+
+                    replies = [
+                        {
+                            text: ticket.adminReply,
+                            createdAt: ticket.adminReplyAt || ""
+                        }
+                    ];
+
+                }
+
+
+                let replyHtml = "";
+
+
+                if (replies.length > 0) {
+
+                    replyHtml = `
+
+                        <div class="reply-history">
+
+                            <div class="reply-history-title">
+                                💬 Admin Reply History
                             </div>
+
+                            ${replies.map((reply, replyIndex) => `
+
+                                <div class="reply-box">
+
+                                    <div class="reply-number">
+                                        Admin Reply #${replyIndex + 1}
+                                    </div>
+
+                                    <div class="reply-text">
+                                        ${escapeHtml(
+                                            reply.text || ""
+                                        )}
+                                    </div>
+
+                                    ${
+                                        reply.createdAt
+                                        ?
+                                        `
+                                        <div class="reply-time">
+                                            ${escapeHtml(
+                                                reply.createdAt
+                                            )}
+                                        </div>
+                                        `
+                                        :
+                                        ""
+                                    }
+
+                                </div>
+
+                            `).join("")}
 
                         </div>
 
-                        <span class="status">
-                            ${escapeHtml(ticket.status)}
-                        </span>
+                    `;
+
+                }
+
+
+                return `
+
+                    <div class="ticket">
+
+                        <div class="ticket-top">
+
+                            <div>
+
+                                <h3>
+                                    ${escapeHtml(
+                                        ticket.subject
+                                    )}
+                                </h3>
+
+                                <div class="ticket-id">
+                                    ${escapeHtml(ticket.id)}
+                                    •
+                                    ${escapeHtml(ticket.createdAt)}
+                                </div>
+
+                            </div>
+
+                            <span class="status">
+                                ${escapeHtml(ticket.status)}
+                            </span>
+
+                        </div>
+
+
+                        <div class="details">
+
+                            <strong>Category:</strong>
+                            ${escapeHtml(ticket.category)}
+
+                            &nbsp; | &nbsp;
+
+                            <strong>Priority:</strong>
+                            ${escapeHtml(ticket.priority)}
+
+                        </div>
+
+
+                        <div>
+                            ${escapeHtml(
+                                ticket.description || ""
+                            )}
+                        </div>
+
+
+                        ${replyHtml}
 
                     </div>
 
+                `;
 
-                    <div class="details">
-
-                        <strong>Category:</strong>
-                        ${escapeHtml(ticket.category)}
-
-                        &nbsp; | &nbsp;
-
-                        <strong>Priority:</strong>
-                        ${escapeHtml(ticket.priority)}
-
-                    </div>
-
-
-                    <div>
-                        ${escapeHtml(ticket.description)}
-                    </div>
-
-                </div>
-
-            `).join("");
+            }).join("");
 
     }
-
+    
 
     function escapeHtml(text) {
 
