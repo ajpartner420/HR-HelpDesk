@@ -601,7 +601,7 @@ body.light .detail-description {
 .reply-section textarea {
     width: 100%;
     min-height: 60px;
-height: auto;
+height: 60px;
 
     resize: none;
     overflow: hidden;
@@ -1086,13 +1086,9 @@ body.light .reply-section textarea {
     ============================ */
 
     if (
-        localStorage.getItem("hr-user-role")
-        !== "admin"
+        localStorage.getItem("hr-user-role") !== "admin"
     ) {
-
-        window.location.href =
-            "../index.html";
-
+        window.location.href = "../index.html";
     }
 
 
@@ -1103,15 +1099,11 @@ body.light .reply-section textarea {
     const savedTheme =
         localStorage.getItem("hr-theme");
 
-
     if (savedTheme === "light") {
 
         document.body.classList.add("light");
 
-        document.getElementById(
-            "themeBtn"
-        ).textContent = "🌙";
-
+        document.getElementById("themeBtn").textContent = "🌙";
     }
 
 
@@ -1119,22 +1111,16 @@ body.light .reply-section textarea {
 
         document.body.classList.toggle("light");
 
-
         const isLight =
             document.body.classList.contains("light");
-
 
         localStorage.setItem(
             "hr-theme",
             isLight ? "light" : "dark"
         );
 
-
-        document.getElementById(
-            "themeBtn"
-        ).textContent =
+        document.getElementById("themeBtn").textContent =
             isLight ? "🌙" : "☀️";
-
     }
 
 
@@ -1145,10 +1131,8 @@ body.light .reply-section textarea {
     function getTickets() {
 
         return JSON.parse(
-            localStorage.getItem("hr-tickets")
-            || "[]"
+            localStorage.getItem("hr-tickets") || "[]"
         );
-
     }
 
 
@@ -1158,38 +1142,23 @@ body.light .reply-section textarea {
 
     function updateStats(tickets) {
 
-        document.getElementById(
-            "totalTickets"
-        ).textContent =
+        document.getElementById("totalTickets").textContent =
             tickets.length;
 
-
-        document.getElementById(
-            "openTickets"
-        ).textContent =
+        document.getElementById("openTickets").textContent =
             tickets.filter(
-                ticket =>
-                    ticket.status === "Open"
+                ticket => ticket.status === "Open"
             ).length;
 
-
-        document.getElementById(
-            "pendingTickets"
-        ).textContent =
+        document.getElementById("pendingTickets").textContent =
             tickets.filter(
-                ticket =>
-                    ticket.status === "Pending"
+                ticket => ticket.status === "Pending"
             ).length;
 
-
-        document.getElementById(
-            "resolvedTickets"
-        ).textContent =
+        document.getElementById("resolvedTickets").textContent =
             tickets.filter(
-                ticket =>
-                    ticket.status === "Resolved"
+                ticket => ticket.status === "Resolved"
             ).length;
-
     }
 
 
@@ -1201,13 +1170,8 @@ body.light .reply-section textarea {
 
         const tickets = getTickets();
 
-
-        /* UPDATE STATISTICS */
-
         updateStats(tickets);
 
-
-        /* SEARCH VALUE */
 
         const search =
             document
@@ -1217,76 +1181,53 @@ body.light .reply-section textarea {
                 .toLowerCase();
 
 
-        /* STATUS FILTER */
-
         const status =
-            document
-                .getElementById("statusFilter")
-                .value;
+            document.getElementById("statusFilter").value;
 
-
-        /* PRIORITY FILTER */
 
         const priority =
-            document
-                .getElementById("priorityFilter")
-                .value;
+            document.getElementById("priorityFilter").value;
 
 
         /*
-            IMPORTANT:
-
-            Original ticket index is preserved
-            so status changing still works
-            after search/filter.
+            Original ticket index preserve kar rahe hain
+            taaki filter ke baad bhi status change sahi ticket par ho.
         */
 
         const filteredTickets =
 
             tickets
-
-                .map(
-                    (ticket, index) => ({
-                        ticket: ticket,
-                        index: index
-                    })
-                )
+                .map((ticket, index) => ({
+                    ticket: ticket,
+                    index: index
+                }))
 
                 .filter(item => {
 
-                    const ticket =
-                        item.ticket;
+                    const ticket = item.ticket;
 
-
-                    /* SEARCH */
 
                     const searchableText =
 
-                        (
-                            String(ticket.id || "") +
-                            " " +
-                            String(ticket.subject || "") +
-                            " " +
-                            String(ticket.category || "") +
-                            " " +
-                            String(ticket.description || "")
-                        )
-                            .toLowerCase();
+                        String(ticket.id || "") +
+                        " " +
+                        String(ticket.subject || "") +
+                        " " +
+                        String(ticket.category || "") +
+                        " " +
+                        String(ticket.description || "");
 
 
                     const matchesSearch =
                         searchableText
+                            .toLowerCase()
                             .includes(search);
 
-
-                    /* STATUS */
 
                     const matchesStatus =
                         status === "All" ||
                         ticket.status === status;
 
-
-                    /* PRIORITY */
 
                     const matchesPriority =
                         priority === "All" ||
@@ -1298,21 +1239,18 @@ body.light .reply-section textarea {
                         matchesStatus &&
                         matchesPriority
                     );
-
                 });
 
 
         const container =
-            document.getElementById(
-                "ticketTable"
-            );
+            document.getElementById("ticketTable");
 
 
-        /* NO RESULTS */
+        /* ============================
+           NO RESULTS
+        ============================ */
 
-        if (
-            filteredTickets.length === 0
-        ) {
+        if (filteredTickets.length === 0) {
 
             let message =
                 "Employee tickets will appear here.";
@@ -1323,10 +1261,8 @@ body.light .reply-section textarea {
                 status !== "All" ||
                 priority !== "All"
             ) {
-
                 message =
                     "Try changing your search or filters.";
-
             }
 
 
@@ -1334,17 +1270,13 @@ body.light .reply-section textarea {
 
                 <div class="empty">
 
-                    <div
-                        style="font-size:50px;"
-                    >
+                    <div style="font-size:50px;">
                         🎫
                     </div>
-
 
                     <h3>
                         No tickets found
                     </h3>
-
 
                     <p>
                         ${escapeHtml(message)}
@@ -1355,11 +1287,12 @@ body.light .reply-section textarea {
             `;
 
             return;
-
         }
 
 
-        /* TABLE */
+        /* ============================
+           TABLE
+        ============================ */
 
         let html = `
 
@@ -1369,185 +1302,125 @@ body.light .reply-section textarea {
 
                     <tr>
 
-                        <th>
-                            Ticket
-                        </th>
+                        <th>Ticket</th>
 
-                        <th>
-                            Subject
-                        </th>
+                        <th>Subject</th>
 
-                        <th>
-                            Category
-                        </th>
+                        <th>Category</th>
 
-                        <th>
-                            Priority
-                        </th>
+                        <th>Priority</th>
 
-                        <th>
-                            Created
-                        </th>
+                        <th>Created</th>
 
-                        <th>
-                            Status
-                        </th>
+                        <th>Status</th>
 
-                        <th>
-                            Action
-                        </th>
-
+                        <th>Action</th>
 
                     </tr>
 
                 </thead>
-
 
                 <tbody>
 
         `;
 
 
-        /* DISPLAY FILTERED TICKETS */
+        filteredTickets.forEach(item => {
 
-        filteredTickets.forEach(
-            (item) => {
+            const ticket = item.ticket;
 
-                const ticket =
-                    item.ticket;
+            const index = item.index;
 
 
-                const index =
-                    item.index;
+            html += `
+
+                <tr>
+
+                    <td>
+
+                        <span class="ticket-id">
+                            ${escapeHtml(ticket.id)}
+                        </span>
+
+                    </td>
 
 
-                html += `
+                    <td>
+                        ${escapeHtml(ticket.subject)}
+                    </td>
 
-                    <tr>
+
+                    <td>
+                        ${escapeHtml(ticket.category)}
+                    </td>
 
 
-                        <td>
+                    <td>
 
-                            <span
-                                class="ticket-id"
+                        <span
+                            class="priority ${escapeHtml(ticket.priority)}"
+                        >
+                            ${escapeHtml(ticket.priority)}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(ticket.createdAt)}
+                    </td>
+
+
+                    <td>
+
+                        <select
+                            class="status-select"
+                            onchange="changeStatus(${index}, this.value)"
+                        >
+
+                            <option
+                                value="Open"
+                                ${ticket.status === "Open" ? "selected" : ""}
                             >
-                                ${escapeHtml(
-                                    ticket.id
-                                )}
-                            </span>
-
-                        </td>
+                                Open
+                            </option>
 
 
-                        <td>
-                            ${escapeHtml(
-                                ticket.subject
-                            )}
-                        </td>
-
-
-                        <td>
-                            ${escapeHtml(
-                                ticket.category
-                            )}
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="priority ${escapeHtml(
-                                    ticket.priority
-                                )}"
+                            <option
+                                value="Pending"
+                                ${ticket.status === "Pending" ? "selected" : ""}
                             >
-
-                                ${escapeHtml(
-                                    ticket.priority
-                                )}
-
-                            </span>
-
-                        </td>
+                                Pending
+                            </option>
 
 
-                        <td>
-                            ${escapeHtml(
-                                ticket.createdAt
-                            )}
-                        </td>
-
-
-                        <td>
-
-                            <select
-                                class="status-select"
-                                onchange="
-                                    changeStatus(
-                                        ${index},
-                                        this.value
-                                    )
-                                "
+                            <option
+                                value="Resolved"
+                                ${ticket.status === "Resolved" ? "selected" : ""}
                             >
+                                Resolved
+                            </option>
+
+                        </select>
+
+                    </td>
 
 
-                                <option
-                                    value="Open"
-                                    ${
-                                        ticket.status === "Open"
-                                        ? "selected"
-                                        : ""
-                                    }
-                                >
-                                    Open
-                                </option>
+                    <td>
 
+                        <button
+                            class="view-btn"
+                            onclick="viewTicket(${index})"
+                        >
+                            👁 View
+                        </button>
 
-                                <option
-                                    value="Pending"
-                                    ${
-                                        ticket.status === "Pending"
-                                        ? "selected"
-                                        : ""
-                                    }
-                                >
-                                    Pending
-                                </option>
+                    </td>
 
+                </tr>
 
-                                <option
-                                    value="Resolved"
-                                    ${
-                                        ticket.status === "Resolved"
-                                        ? "selected"
-                                        : ""
-                                    }
-                                >
-                                    Resolved
-                                </option>
-
-
-                            </select>
-
-                        </td>
-
-                        <td>
-
-                            <button
-                                class="view-btn"
-                                onclick="viewTicket(${index})"
-                            >
-                                👁 View
-                            </button>
-
-                        </td>
-
-
-                    </tr>
-
-                `;
-
-            }
-        );
+            `;
+        });
 
 
         html += `
@@ -1559,348 +1432,543 @@ body.light .reply-section textarea {
         `;
 
 
-        container.innerHTML =
-            html;
-
+        container.innerHTML = html;
     }
 
 
     /* ============================
-   VIEW TICKET DETAILS
-============================ */
+       GET ADMIN REPLY HISTORY
+    ============================ */
 
-function viewTicket(index) {
+    function getAdminReplies(ticket) {
 
-    const tickets = getTickets();
+        /*
+            Agar new system ka reply history available hai
+            to wahi use hoga.
+        */
 
-    const ticket = tickets[index];
+        if (Array.isArray(ticket.adminReplies)) {
 
-    if (!ticket) {
-        return;
+            return ticket.adminReplies;
+        }
+
+
+        /*
+            Purane tickets ke liye compatibility.
+
+            Agar ticket me sirf old adminReply hai,
+            to usko bhi history me show karenge.
+        */
+
+        if (ticket.adminReply) {
+
+            return [
+                {
+                    text: ticket.adminReply,
+                    createdAt: ticket.adminReplyAt || ""
+                }
+            ];
+        }
+
+
+        return [];
     }
 
-    const details =
-        document.getElementById("ticketDetails");
 
-    details.dataset.ticketId = ticket.id;
+    /* ============================
+       VIEW TICKET DETAILS
+    ============================ */
 
-let replyHtml = "";
+    function viewTicket(index) {
 
-if (Array.isArray(ticket.adminReplies) && ticket.adminReplies.length > 0) {
-    replyHtml = `
-        <div class="detail-description">
-            <div class="detail-label">💬 Reply History</div>
+        const tickets = getTickets();
 
-            ${ticket.adminReplies.map((reply, i) => `
-                <div style="
-                    margin-top:12px;
-                    padding:12px;
-                    border-radius:10px;
-                    background:rgba(255,255,255,.05);
-                    border:1px solid rgba(255,255,255,.07);
-                ">
-                    <div style="font-size:12px; opacity:.6; margin-bottom:6px;">
-                        Reply #${i + 1}
+        const ticket = tickets[index];
+
+
+        if (!ticket) {
+            return;
+        }
+
+
+        const details =
+            document.getElementById("ticketDetails");
+
+
+        /*
+            Current ticket ID save kar rahe hain
+            taaki Admin Reply sahi ticket me save ho.
+        */
+
+        details.dataset.ticketId = ticket.id;
+
+
+        /* ============================
+           REPLY HISTORY
+        ============================ */
+
+        const replies = getAdminReplies(ticket);
+
+        let replyHtml = "";
+
+
+        if (replies.length > 0) {
+
+            replyHtml = `
+
+                <div class="detail-description">
+
+                    <div class="detail-label">
+                        💬 Reply History
                     </div>
 
-                    <div style="
-                        white-space:pre-wrap;
-                        line-height:1.6;
-                    ">
-                        ${escapeHtml(reply.text)}
-                    </div>
 
-                    ${
-                        reply.createdAt
-                        ? `
-                            <div style="
-                                margin-top:8px;
-                                font-size:11px;
-                                opacity:.5;
-                            ">
-                                🕐 ${escapeHtml(reply.createdAt)}
+                    ${replies.map((reply, i) => `
+
+                        <div
+                            style="
+                                margin-top:12px;
+                                padding:12px;
+                                border-radius:10px;
+                                background:rgba(255,255,255,.05);
+                                border:1px solid rgba(255,255,255,.07);
+                            "
+                        >
+
+                            <div
+                                style="
+                                    font-size:12px;
+                                    opacity:.6;
+                                    margin-bottom:6px;
+                                "
+                            >
+                                Reply #${i + 1}
                             </div>
-                        `
-                        : ""
-                    }
+
+
+                            <div
+                                style="
+                                    white-space:pre-wrap;
+                                    line-height:1.6;
+                                    height:auto;
+                                    overflow:visible;
+                                    word-break:break-word;
+                                "
+                            >
+                                ${escapeHtml(reply.text)}
+                            </div>
+
+
+                            ${
+                                reply.createdAt
+                                ? `
+                                    <div
+                                        style="
+                                            margin-top:8px;
+                                            font-size:11px;
+                                            opacity:.5;
+                                        "
+                                    >
+                                        🕐 ${escapeHtml(reply.createdAt)}
+                                    </div>
+                                `
+                                : ""
+                            }
+
+                        </div>
+
+                    `).join("")}
+
                 </div>
-            `).join("")}
-        </div>
-    `;
-}    
-    details.innerHTML = `
 
-        <div class="detail-grid">
+            `;
+        }
 
-            <div class="detail-item">
+
+        /* ============================
+           TICKET DETAILS HTML
+        ============================ */
+
+        details.innerHTML = `
+
+            <div class="detail-grid">
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Ticket ID
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.id)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Status
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.status)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Employee
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.employee || "N/A")}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Email
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.email || "N/A")}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Category
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.category)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Priority
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.priority)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Created
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.createdAt)}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <div class="detail-label">
+                        Subject
+                    </div>
+
+                    <div class="detail-value">
+                        ${escapeHtml(ticket.subject)}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="detail-description">
 
                 <div class="detail-label">
-                    Ticket ID
+                    Description
                 </div>
 
-                <div class="detail-value">
-                    ${escapeHtml(ticket.id)}
-                </div>
+
+                ${escapeHtml(
+                    ticket.description ||
+                    "No description provided."
+                )}
 
             </div>
 
 
-            <div class="detail-item">
+            ${replyHtml}
 
-                <div class="detail-label">
-                    Status
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.status)}
-                </div>
-
-            </div>
+        `;
 
 
-            <div class="detail-item">
+        /*
+            Har baar ticket open karne par
+            reply box ko small size se start karenge.
+        */
 
-                <div class="detail-label">
-                    Employee
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.employee || "N/A")}
-                </div>
-
-            </div>
+        const replyBox =
+            document.getElementById("adminReply");
 
 
-            <div class="detail-item">
+        if (replyBox) {
 
-                <div class="detail-label">
-                    Email
-                </div>
+            replyBox.value = "";
 
-                <div class="detail-value">
-                    ${escapeHtml(ticket.email || "N/A")}
-                </div>
-
-            </div>
+            replyBox.style.height = "60px";
+        }
 
 
-            <div class="detail-item">
-
-                <div class="detail-label">
-                    Category
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.category)}
-                </div>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <div class="detail-label">
-                    Priority
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.priority)}
-                </div>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <div class="detail-label">
-                    Created
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.createdAt)}
-                </div>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <div class="detail-label">
-                    Subject
-                </div>
-
-                <div class="detail-value">
-                    ${escapeHtml(ticket.subject)}
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="detail-description">
-
-            <div class="detail-label">
-                Description
-            </div>
-
-            ${escapeHtml(
-                ticket.description || "No description provided."
-            )}
-
-        </div>
-
-        ${replyHtml}
-
-    `;
-
-
-    document
-        .getElementById("ticketModal")
-        .classList.add("show");
-
-}
-
-/* ============================
-   ADMIN REPLY
-============================ */
-
-function sendAdminReply() {
-
-    const reply =
         document
-            .getElementById("adminReply")
-            .value
-            .trim();
-
-    if (!reply) {
-
-        alert("Please write a reply first.");
-
-        return;
+            .getElementById("ticketModal")
+            .classList.add("show");
     }
 
 
-    /*
-        Get the ticket currently being viewed
-    */
+    /* ============================
+       AUTO RESIZE REPLY BOX
+    ============================ */
 
-    const ticketId =
-        document
-            .getElementById("ticketDetails")
-            .dataset.ticketId;
+    function autoResizeReplyBox() {
+
+        const replyBox =
+            document.getElementById("adminReply");
 
 
-    if (!ticketId) {
+        if (!replyBox) {
+            return;
+        }
 
-        alert("Ticket not found.");
 
-        return;
+        /*
+            Pehle height reset.
+            Phir actual content ke according
+            scrollHeight set.
+        */
+
+        replyBox.style.height = "auto";
+
+        replyBox.style.height =
+            replyBox.scrollHeight + "px";
     }
 
 
-    const tickets = getTickets();
+    /* ============================
+       ADMIN REPLY
+    ============================ */
+
+    function sendAdminReply() {
+
+        const replyBox =
+            document.getElementById("adminReply");
 
 
-    const ticketIndex =
-        tickets.findIndex(
-            ticket =>
-                String(ticket.id) === String(ticketId)
+        const reply =
+            replyBox.value.trim();
+
+
+        if (!reply) {
+
+            alert("Please write a reply first.");
+
+            return;
+        }
+
+
+        /*
+            Current ticket ID
+        */
+
+        const ticketId =
+            document
+                .getElementById("ticketDetails")
+                .dataset.ticketId;
+
+
+        if (!ticketId) {
+
+            alert("Ticket not found.");
+
+            return;
+        }
+
+
+        const tickets = getTickets();
+
+
+        const ticketIndex =
+            tickets.findIndex(
+                ticket =>
+                    String(ticket.id) ===
+                    String(ticketId)
+            );
+
+
+        if (ticketIndex === -1) {
+
+            alert("Ticket not found.");
+
+            return;
+        }
+
+
+        /* ============================
+           SAVE REPLY
+        ============================ */
+
+        const replyTime =
+            new Date().toLocaleString();
+
+
+        /*
+            Agar old ticket me adminReplies
+            array nahi hai to create karenge.
+        */
+
+        if (
+            !Array.isArray(
+                tickets[ticketIndex].adminReplies
+            )
+        ) {
+
+            tickets[ticketIndex].adminReplies = [];
+
+
+            /*
+                Purana single reply agar hai,
+                to pehle usko history me migrate karenge.
+            */
+
+            if (
+                tickets[ticketIndex].adminReply
+            ) {
+
+                tickets[ticketIndex]
+                    .adminReplies
+                    .push({
+
+                        text:
+                            tickets[ticketIndex]
+                                .adminReply,
+
+                        createdAt:
+                            tickets[ticketIndex]
+                                .adminReplyAt || ""
+                    });
+            }
+        }
+
+
+        /*
+            IMPORTANT:
+
+            Yahan PUSH use ho raha hai.
+
+            Isliye new reply purane reply ko
+            overwrite nahi karega.
+        */
+
+        tickets[ticketIndex]
+            .adminReplies
+            .push({
+
+                text: reply,
+
+                createdAt: replyTime
+            });
+
+
+        /*
+            Latest reply compatibility ke liye
+            separate fields me bhi save kar rahe hain.
+        */
+
+        tickets[ticketIndex].adminReply =
+            reply;
+
+
+        tickets[ticketIndex].adminReplyAt =
+            replyTime;
+
+
+        /* ============================
+           SAVE TO LOCAL STORAGE
+        ============================ */
+
+        localStorage.setItem(
+            "hr-tickets",
+            JSON.stringify(tickets)
         );
 
 
-    if (ticketIndex === -1) {
+        /* ============================
+           CLEAR REPLY BOX
+        ============================ */
 
-        alert("Ticket not found.");
+        replyBox.value = "";
 
-        return;
+        replyBox.style.height = "60px";
+
+
+        alert("Reply sent successfully!");
+
+
+        /*
+            Details refresh karenge.
+
+            Purana reply + naya reply
+            dono history me dikhenge.
+        */
+
+        viewTicket(ticketIndex);
     }
 
 
-    /*
-        Save admin reply
-    */
+    /* ============================
+       CLOSE MODAL
+    ============================ */
 
-    if (!Array.isArray(tickets[ticketIndex].adminReplies)) {
-    tickets[ticketIndex].adminReplies = [];
+    function closeTicketModal() {
 
-    if (tickets[ticketIndex].adminReply) {
-        tickets[ticketIndex].adminReplies.push({
-            text: tickets[ticketIndex].adminReply,
-            createdAt:
-                tickets[ticketIndex].adminReplyAt
-                || new Date().toLocaleString()
-        });
-    }
-}
-
-tickets[ticketIndex].adminReplies.push({
-    text: reply,
-    createdAt: new Date().toLocaleString()
-});
-
-/* Keep latest reply for compatibility */
-tickets[ticketIndex].adminReply = reply;
-
-tickets[ticketIndex].adminReplyAt =
-    new Date().toLocaleString();
-
-    tickets[ticketIndex].adminReplyAt =
-        new Date().toLocaleString();
-
-
-    localStorage.setItem(
-        "hr-tickets",
-        JSON.stringify(tickets)
-    );
-
-
-    /*
-        Clear textbox
-    */
-
-    document
-        .getElementById("adminReply")
-        .value = "";
-
-
-    alert("Reply sent successfully!");
-
-
-    /*
-        Refresh ticket details
-    */
-
-    viewTicket(ticketIndex);
-
-}
-    
-
-/* CLOSE MODAL */
-
-function closeTicketModal() {
-
-    document
-        .getElementById("ticketModal")
-        .classList.remove("show");
-
-}
-
-
-/* CLOSE WHEN CLICKING OUTSIDE */
-
-function closeModalOnOutside(event) {
-
-    if (
-        event.target.id === "ticketModal"
-    ) {
-
-        closeTicketModal();
-
+        document
+            .getElementById("ticketModal")
+            .classList.remove("show");
     }
 
-}
-    
+
+    /* ============================
+       CLOSE OUTSIDE MODAL
+    ============================ */
+
+    function closeModalOnOutside(event) {
+
+        if (
+            event.target.id === "ticketModal"
+        ) {
+
+            closeTicketModal();
+        }
+    }
+
 
     /* ============================
        CHANGE STATUS
@@ -1911,16 +1979,11 @@ function closeModalOnOutside(event) {
         newStatus
     ) {
 
-        const tickets =
-            getTickets();
+        const tickets = getTickets();
 
 
-        if (
-            !tickets[index]
-        ) {
-
+        if (!tickets[index]) {
             return;
-
         }
 
 
@@ -1934,10 +1997,7 @@ function closeModalOnOutside(event) {
         );
 
 
-        /* REFRESH DASHBOARD */
-
         displayTickets();
-
     }
 
 
@@ -1948,9 +2008,7 @@ function closeModalOnOutside(event) {
     function escapeHtml(text) {
 
         const div =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         div.textContent =
@@ -1958,7 +2016,6 @@ function closeModalOnOutside(event) {
 
 
         return div.innerHTML;
-
     }
 
 
@@ -1975,8 +2032,19 @@ function closeModalOnOutside(event) {
 
         window.location.href =
             "../index.html";
-
     }
+
+
+    /* ============================
+       REPLY BOX INPUT LISTENER
+    ============================ */
+
+    document
+        .getElementById("adminReply")
+        .addEventListener(
+            "input",
+            autoResizeReplyBox
+        );
 
 
     /* ============================
@@ -1986,7 +2054,6 @@ function closeModalOnOutside(event) {
     displayTickets();
 
 </script>
-
 
 </body>
 
