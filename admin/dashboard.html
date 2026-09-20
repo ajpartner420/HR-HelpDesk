@@ -544,40 +544,45 @@ body.light .detail-item {
 
 .detail-description {
     margin-top: 12px;
-    padding: 10px 12px;
+    padding: 12px;
 
     border-radius: 10px;
 
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.08);
 
+    height: auto;
+    min-height: 0;
+
+    overflow: visible;
+
+    display: block;
+}
+
+.detail-description .detail-label {
+    margin: 0 0 8px 0;
+    padding: 0;
+}
+
+.description-text {
+    margin: 0;
+    padding: 0;
+
+    font-size: 14px;
     line-height: 1.5;
 
     white-space: pre-wrap;
     word-break: break-word;
-    
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
 
-    overflow: visible !important;
+    height: auto;
+    min-height: 0;
 
-    display: block !important;
+    overflow: visible;
 }
 
-.detail-description .detail-label {
-    margin: 0 0 6px 0 !important;
-    padding: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-}
-
-.detail-description > div:last-child {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-    line-height: 1.5 !important;
+body.light .detail-description {
+    background: rgba(0,0,0,.04);
+    border-color: rgba(0,0,0,.08);
 }
         .reply-history {
     margin-top: 14px;
@@ -1766,9 +1771,16 @@ body.light .reply-section textarea {
 
             <div class="detail-description">
 
-                <div class="detail-label">
-                    Description
-                </div>
+    <div class="detail-label">
+        Description
+    </div>
+
+    <div class="description-text">${escapeHtml(
+        ticket.description ||
+        "No description provided."
+    )}</div>
+
+</div>
 
 
                 ${escapeHtml(
