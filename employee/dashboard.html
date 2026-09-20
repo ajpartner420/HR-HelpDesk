@@ -1,614 +1,973 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Employee Dashboard | HR Helpdesk</title>
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+
         body {
+
             min-height: 100vh;
+
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #07111f, #0b1d35, #06101e);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0b1d35,
+                    #06101e
+                );
+
             color: white;
+
             overflow-x: hidden;
         }
 
+
         body.light {
-            background: linear-gradient(135deg, #eef7ff, #dceeff, #f7fbff);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef7ff,
+                    #dceeff,
+                    #f7fbff
+                );
+
             color: #172033;
         }
 
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
         .background-orb {
+
             position: fixed;
+
             width: 300px;
             height: 300px;
+
             border-radius: 50%;
+
             filter: blur(80px);
+
             opacity: .35;
+
             z-index: -1;
         }
 
+
         .orb1 {
+
             background: #00c6ff;
+
             top: -100px;
             left: -100px;
         }
 
+
         .orb2 {
+
             background: #0066ff;
+
             right: -100px;
             bottom: -100px;
         }
 
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
         .layout {
+
             display: flex;
+
             min-height: 100vh;
         }
 
-        /* SIDEBAR */
+
+        /* =========================
+           SIDEBAR
+        ========================= */
 
         .sidebar {
+
             width: 250px;
+
             padding: 25px 18px;
-            border-right: 1px solid rgba(255,255,255,.12);
-            background: rgba(255,255,255,.06);
+
+            border-right:
+                1px solid rgba(255,255,255,.12);
+
+            background:
+                rgba(255,255,255,.06);
+
             backdrop-filter: blur(20px);
         }
 
+
         .sidebar .logo {
-    width: 100%;
-    height: 70px;
 
-    margin-bottom: 40px;
-    padding: 0 18px;
+            width: 100%;
+            height: 70px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            margin-bottom: 40px;
 
-    gap: 8px;
+            padding: 0 18px;
 
-    border-radius: 18px;
+            display: flex;
 
-    background: linear-gradient(
-        135deg,
-        #2478e8,
-        #00b8e8
-    );
+            align-items: center;
+            justify-content: center;
 
-    color: white;
+            gap: 8px;
 
-    font-size: 20px;
-    font-weight: 700;
+            border-radius: 18px;
 
-    white-space: nowrap;
+            background:
+                linear-gradient(
+                    135deg,
+                    #2478e8,
+                    #00b8e8
+                );
 
-    box-sizing: border-box;
+            color: white;
 
-    box-shadow:
-        0 10px 30px rgba(0,198,255,.18);
-}
+            font-size: 20px;
 
-.sidebar .logo span {
-    color: #00c6ff;
-    font-size: 20px;
-}
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            box-sizing: border-box;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,198,255,.18);
+        }
+
+
+        .sidebar .logo span {
+
+            color: #00c6ff;
+
+            font-size: 20px;
+        }
+
 
         .menu {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 8px;
         }
 
+
         .menu a {
+
             text-decoration: none;
+
             color: inherit;
+
             padding: 14px;
+
             border-radius: 12px;
+
             transition: .25s;
         }
 
+
         .menu a:hover,
         .menu a.active {
-            background: rgba(0,198,255,.16);
+
+            background:
+                rgba(0,198,255,.16);
+
             color: #00c6ff;
         }
 
+
         .logout {
+
             margin-top: 40px;
+
             color: #ff6b6b !important;
         }
 
-        /* MAIN */
+
+        /* =========================
+           MAIN
+        ========================= */
 
         .main {
+
             flex: 1;
+
             padding: 25px;
         }
 
+
         .topbar {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 30px;
         }
 
+
         .welcome h1 {
+
             font-size: 28px;
+
             margin-bottom: 6px;
         }
 
+
         .welcome p {
+
             opacity: .7;
         }
 
+
         .top-actions {
+
             display: flex;
+
             gap: 10px;
         }
 
+
         .icon-btn {
+
             width: 45px;
             height: 45px;
-            border: 1px solid rgba(255,255,255,.15);
+
+            border:
+                1px solid
+                rgba(255,255,255,.15);
+
             border-radius: 12px;
-            background: rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.08);
+
             color: inherit;
+
             cursor: pointer;
+
             font-size: 18px;
+
             backdrop-filter: blur(15px);
+
+            transition: .25s;
         }
+
 
         .icon-btn:hover {
-            transform: translateY(-2px);
-            background: rgba(0,198,255,.15);
+
+            transform:
+                translateY(-2px);
+
+            background:
+                rgba(0,198,255,.15);
         }
 
-/* NOTIFICATIONS */
 
-.notification-wrapper {
-    position: relative;
-}
+        /* =========================
+           NOTIFICATIONS
+        ========================= */
 
-.notification-btn {
-    position: relative;
-}
+        .notification-wrapper {
 
-.notification-badge {
-    position: absolute;
+            position: relative;
+        }
 
-    top: -5px;
-    right: -5px;
 
-    min-width: 19px;
-    height: 19px;
+        .notification-btn {
 
-    padding: 0 5px;
+            position: relative;
+        }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    border-radius: 20px;
+        .notification-badge {
 
-    background: #ff4d6d;
-    color: white;
+            position: absolute;
 
-    font-size: 10px;
-    font-weight: bold;
+            top: -5px;
+            right: -5px;
 
-    border: 2px solid #07111f;
-}
+            min-width: 19px;
+            height: 19px;
 
-.notification-panel {
-    position: absolute;
+            padding: 0 5px;
 
-    top: 55px;
-    right: 0;
+            display: flex;
 
-    width: 350px;
-    max-width: calc(100vw - 40px);
+            align-items: center;
+            justify-content: center;
 
-    padding: 0;
+            border-radius: 20px;
 
-    border-radius: 16px;
+            background: #ff4d6d;
 
-    background: rgba(10,25,45,.95);
-    border: 1px solid rgba(255,255,255,.12);
+            color: white;
 
-    backdrop-filter: blur(20px);
+            font-size: 10px;
 
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.35);
+            font-weight: bold;
 
-    z-index: 1000;
+            border:
+                2px solid #07111f;
+        }
 
-    display: none;
 
-    overflow: hidden;
-}
+        .notification-panel {
 
-.notification-panel.show {
-    display: block;
-}
+            position: absolute;
 
-.notification-header {
-    display: flex;
+            top: 55px;
+            right: 0;
 
-    align-items: center;
-    justify-content: space-between;
+            width: 350px;
 
-    padding: 15px;
+            max-width:
+                calc(100vw - 40px);
 
-    border-bottom: 1px solid rgba(255,255,255,.08);
-}
+            padding: 0;
 
-.mark-read {
-    border: none;
-    background: transparent;
+            border-radius: 16px;
 
-    color: #00c6ff;
+            background:
+                rgba(10,25,45,.95);
 
-    font-size: 11px;
+            border:
+                1px solid
+                rgba(255,255,255,.12);
 
-    cursor: pointer;
-}
+            backdrop-filter: blur(20px);
 
-.notification-item {
-    padding: 13px 15px;
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,.35);
 
-    border-bottom: 1px solid rgba(255,255,255,.06);
+            z-index: 1000;
 
-    cursor: pointer;
+            display: none;
 
-    transition: .2s;
-}
+            overflow: hidden;
+        }
 
-.notification-item:hover {
-    background: rgba(0,198,255,.08);
-}
 
-.notification-item.unread {
-    background: rgba(0,198,255,.06);
-}
+        .notification-panel.show {
 
-.notification-title {
-    font-size: 13px;
-    font-weight: bold;
+            display: block;
+        }
 
-    margin-bottom: 4px;
-}
 
-.notification-message {
-    font-size: 12px;
-    line-height: 1.4;
+        .notification-header {
 
-    opacity: .7;
-}
+            display: flex;
 
-.notification-time {
-    margin-top: 5px;
+            align-items: center;
 
-    font-size: 10px;
+            justify-content: space-between;
 
-    opacity: .45;
-}
+            padding: 15px;
 
-.no-notifications {
-    padding: 30px 15px;
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.08);
+        }
 
-    text-align: center;
 
-    font-size: 13px;
+        .mark-read {
 
-    opacity: .5;
-}
+            border: none;
 
-body.light .notification-panel {
-    background: rgba(255,255,255,.95);
-    border-color: rgba(0,0,0,.08);
+            background: transparent;
 
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.15);
-}
+            color: #00c6ff;
 
-body.light .notification-badge {
-    border-color: #eef7ff;
-}
+            font-size: 11px;
 
-@media(max-width:650px) {
+            cursor: pointer;
+        }
 
-    .notification-panel {
-        position: fixed;
 
-        top: 75px;
-        right: 18px;
-        left: 18px;
+        .notification-item {
 
-        width: auto;
-        max-width: none;
-    }
+            padding: 13px 15px;
 
-}
-        
-        /* CARDS */
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.06);
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+
+        .notification-item:hover {
+
+            background:
+                rgba(0,198,255,.08);
+        }
+
+
+        .notification-item.unread {
+
+            background:
+                rgba(0,198,255,.06);
+        }
+
+
+        .notification-title {
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 4px;
+        }
+
+
+        .notification-message {
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+            opacity: .7;
+        }
+
+
+        .notification-time {
+
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            opacity: .45;
+        }
+
+
+        .no-notifications {
+
+            padding: 30px 15px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            opacity: .5;
+        }
+
+
+        body.light .notification-panel {
+
+            background:
+                rgba(255,255,255,.95);
+
+            border-color:
+                rgba(0,0,0,.08);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,.15);
+        }
+
+
+        body.light .notification-badge {
+
+            border-color: #eef7ff;
+        }
+
+
+        /* =========================
+           CARDS
+        ========================= */
 
         .stats {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 18px;
+
             margin-bottom: 25px;
         }
 
+
         .card {
-            background: rgba(255,255,255,.07);
-            border: 1px solid rgba(255,255,255,.13);
+
+            background:
+                rgba(255,255,255,.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,.13);
+
             border-radius: 18px;
+
             padding: 22px;
+
             backdrop-filter: blur(20px);
-            box-shadow: 0 15px 40px rgba(0,0,0,.15);
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.15);
         }
+
 
         body.light .card,
         body.light .sidebar,
         body.light .icon-btn {
-            background: rgba(255,255,255,.55);
-            border-color: rgba(0,0,0,.08);
+
+            background:
+                rgba(255,255,255,.55);
+
+            border-color:
+                rgba(0,0,0,.08);
         }
 
+
         .stat-title {
+
             opacity: .7;
+
             font-size: 14px;
         }
 
+
         .stat-number {
+
             font-size: 34px;
+
             font-weight: bold;
+
             margin-top: 10px;
         }
 
+
         .blue {
+
             color: #00c6ff;
         }
 
+
         .yellow {
+
             color: #ffc857;
         }
 
+
         .green {
+
             color: #38e38b;
         }
 
-        /* CONTENT */
+
+        /* =========================
+           CONTENT
+        ========================= */
 
         .content-grid {
+
             display: grid;
-            grid-template-columns: 2fr 1fr;
+
+            grid-template-columns:
+                2fr 1fr;
+
             gap: 20px;
         }
 
+
         .card-header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 20px;
         }
 
+
         .card-header h2 {
+
             font-size: 18px;
         }
 
+
         .view-all {
+
             color: #00c6ff;
+
             text-decoration: none;
+
             font-size: 13px;
         }
 
-        /* TICKETS */
+
+        /* =========================
+           TICKETS
+        ========================= */
 
         .ticket {
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
+
             padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,.08);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.08);
         }
 
+
         .ticket:last-child {
+
             border-bottom: none;
         }
 
+
         .ticket-title {
+
             font-weight: bold;
+
             margin-bottom: 5px;
         }
 
+
         .ticket-id {
+
             font-size: 12px;
+
             opacity: .6;
         }
 
+
         .status {
-            padding: 6px 10px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 38px;
+
+            padding: 0 16px;
+
             border-radius: 20px;
+
             font-size: 11px;
+
+            line-height: 1;
+
+            white-space: nowrap;
         }
 
+
         .status.open {
-            background: rgba(0,198,255,.15);
+
+            background:
+                rgba(0,198,255,.15);
+
             color: #00c6ff;
         }
 
+
         .status.pending {
-            background: rgba(255,200,87,.15);
+
+            background:
+                rgba(255,200,87,.15);
+
             color: #ffc857;
         }
 
+
         .status.resolved {
-            background: rgba(56,227,139,.15);
+
+            background:
+                rgba(56,227,139,.15);
+
             color: #38e38b;
         }
 
 
-                /* ADMIN REPLY PREVIEW */
+        /* =========================
+           ADMIN REPLY PREVIEW
+        ========================= */
 
         .admin-reply-preview {
+
             margin-top: 15px;
+
             padding: 12px;
 
             border-radius: 12px;
 
-            background: rgba(0,198,255,.06);
-            border: 1px solid rgba(0,198,255,.12);
+            background:
+                rgba(0,198,255,.06);
+
+            border:
+                1px solid
+                rgba(0,198,255,.12);
         }
 
+
         .admin-reply-title {
+
             color: #00c6ff;
+
             font-size: 12px;
+
             font-weight: bold;
 
             margin-bottom: 6px;
         }
 
+
         .admin-reply-text {
+
             font-size: 13px;
+
             line-height: 1.5;
 
             opacity: .85;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
+
         body.light .admin-reply-preview {
-            background: rgba(0,114,255,.05);
-            border-color: rgba(0,114,255,.12);
+
+            background:
+                rgba(0,114,255,.05);
+
+            border-color:
+                rgba(0,114,255,.12);
         }
-        
-        /* QUICK ACTION */
+
+
+        /* =========================
+           QUICK ACTION
+        ========================= */
 
         .quick-action {
+
             margin-bottom: 20px;
         }
 
+
         .quick-action p {
+
             opacity: .7;
+
             line-height: 1.6;
+
             margin: 12px 0 20px;
         }
 
+
         .primary-btn {
+
             width: 100%;
+
             padding: 13px;
+
             border: none;
+
             border-radius: 12px;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00c6ff,
+                    #0072ff
+                );
+
             color: white;
+
             font-weight: bold;
+
             cursor: pointer;
+
             transition: .25s;
         }
 
+
         .primary-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,114,255,.3);
-        }
 
-        /* ANNOUNCEMENT */
+            transform:
+                translateY(-2px);
 
-        .announcement {
-            padding: 13px 0;
-            border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-
-        .announcement:last-child {
-            border-bottom: none;
-        }
-
-        .announcement strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .announcement small {
-            opacity: .6;
+            box-shadow:
+                0 10px 25px
+                rgba(0,114,255,.3);
         }
 
 
-        /* ANNOUNCEMENTS */
+        /* =========================
+           ANNOUNCEMENTS
+        ========================= */
 
         .announcements-card {
+
             overflow: hidden;
         }
 
+
         .announcement-count {
-            padding: 5px 9px;
+
+            min-width: 22px;
+
+            height: 22px;
+
+            padding: 0 7px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
 
             border-radius: 20px;
 
-            background: rgba(0,198,255,.12);
+            background:
+                rgba(0,198,255,.12);
+
             color: #00c6ff;
 
             font-size: 11px;
+
             font-weight: bold;
         }
 
+
         .announcement {
+
             display: flex;
+
             align-items: flex-start;
 
             gap: 12px;
 
             padding: 14px 0;
 
-            border-bottom: 1px solid rgba(255,255,255,.08);
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.08);
+
+            cursor: pointer;
+
+            transition: .2s;
         }
 
+
         .announcement:last-child {
+
             border-bottom: none;
         }
 
+
+        .announcement:hover {
+
+            background:
+                rgba(0,198,255,.05);
+        }
+
+
         .announcement-icon {
+
             width: 38px;
             height: 38px;
 
             flex-shrink: 0;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             border-radius: 12px;
 
-            background: rgba(0,198,255,.12);
+            background:
+                rgba(0,198,255,.12);
 
             font-size: 18px;
         }
 
+
         .announcement-content {
+
             min-width: 0;
+
+            flex: 1;
         }
 
+
         .announcement-content strong {
-            display: block;
+
+            display: flex;
+
+            align-items: center;
+
+            flex-wrap: wrap;
 
             margin-bottom: 5px;
 
             font-size: 14px;
         }
 
+
         .announcement-content p {
+
             margin: 0 0 5px;
 
             font-size: 13px;
@@ -616,792 +975,1714 @@ body.light .notification-badge {
             line-height: 1.5;
 
             opacity: .7;
+
+            word-break: break-word;
         }
 
+
         .announcement-content small {
+
             font-size: 11px;
+
             opacity: .5;
         }
 
-        body.light .announcement {
-            border-color: rgba(0,0,0,.08);
+
+        .announcement-new {
+
+            position: relative;
         }
+
+
+        .announcement-new-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-left: 7px;
+
+            padding: 3px 7px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,77,109,.14);
+
+            color: #ff4d6d;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+
+        .announcement-empty {
+
+            text-align: center;
+
+            padding: 25px 10px;
+
+            opacity: .55;
+
+            font-size: 13px;
+        }
+
+
+        body.light .announcement {
+
+            border-color:
+                rgba(0,0,0,.08);
+        }
+
 
         body.light .announcement-icon {
-            background: rgba(0,114,255,.08);
+
+            background:
+                rgba(0,114,255,.08);
         }
-        /* Dynamic Announcements */
 
-.announcement-empty {
-    text-align: center;
-    padding: 25px 10px;
-    opacity: .55;
-    font-size: 13px;
-}
 
-/* Announcement Detail Modal */
+        body.light .announcement-count {
 
-.announcement-detail-box {
-    max-width: 600px;
-}
+            background:
+                rgba(0,114,255,.08);
 
-.announcement-detail-content {
-    padding: 10px 0 5px;
-}
+            color: #0072ff;
+        }
 
-.announcement-detail-icon {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 18px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        /* =========================
+           ANNOUNCEMENT MODAL
+        ========================= */
 
-    border-radius: 18px;
+        .modal {
 
-    background: rgba(0,198,255,.12);
+            position: fixed;
 
-    font-size: 30px;
-}
+            inset: 0;
 
-.announcement-detail-message {
-    font-size: 15px;
-    line-height: 1.7;
+            display: none;
 
-    white-space: pre-wrap;
-    word-break: break-word;
+            align-items: center;
 
-    opacity: .85;
-}
+            justify-content: center;
 
-.announcement-detail-time {
-    margin-top: 18px;
+            padding: 20px;
 
-    font-size: 11px;
+            background:
+                rgba(0,0,0,.55);
 
-    opacity: .5;
-}
+            backdrop-filter: blur(8px);
 
-.announcement-new {
-    cursor: pointer;
-}
+            z-index: 5000;
+        }
 
-.announcement-new:hover {
-    background: rgba(0,198,255,.05);
-}
 
-body.light .announcement-detail-icon {
-    background: rgba(0,114,255,.08);
-}
-        
-.announcement-new {
-    position: relative;
-}
+        .modal.show {
 
-.announcement-new-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 7px;
-    padding: 3px 7px;
-    border-radius: 20px;
-    background: rgba(255,77,109,.14);
-    color: #ff4d6d;
-    font-size: 9px;
-    font-weight: 700;
-}
+            display: flex;
+        }
 
-.announcement-content strong {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
 
-.announcement-count {
-    min-width: 22px;
-    height: 22px;
-    padding: 0 7px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    background: rgba(0,198,255,.12);
-    color: #00c6ff;
-    font-size: 11px;
-    font-weight: bold;
-}
+        .modal-box {
 
-body.light .announcement-count {
-    background: rgba(0,114,255,.08);
-    color: #0072ff;
-}
-        
-        /* MOBILE */
+            width: 100%;
+
+            max-width: 600px;
+
+            max-height:
+                calc(100vh - 40px);
+
+            overflow-y: auto;
+
+            padding: 22px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(10,25,45,.96);
+
+            border:
+                1px solid
+                rgba(255,255,255,.14);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,.4);
+
+            backdrop-filter: blur(25px);
+        }
+
+
+        .modal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+
+        .modal-header h2 {
+
+            font-size: 20px;
+
+            line-height: 1.3;
+        }
+
+
+        .close-btn {
+
+            width: 36px;
+            height: 36px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,.08);
+
+            color: inherit;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+
+        .close-btn:hover {
+
+            background:
+                rgba(255,77,109,.15);
+
+            color: #ff6b6b;
+        }
+
+
+        .announcement-detail-box {
+
+            max-width: 600px;
+        }
+
+
+        .announcement-detail-content {
+
+            padding: 10px 0 5px;
+        }
+
+
+        .announcement-detail-icon {
+
+            width: 64px;
+            height: 64px;
+
+            margin-bottom: 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                rgba(0,198,255,.12);
+
+            font-size: 30px;
+        }
+
+
+        .announcement-detail-message {
+
+            font-size: 15px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+            opacity: .85;
+        }
+
+
+        .announcement-detail-time {
+
+            margin-top: 18px;
+
+            font-size: 11px;
+
+            opacity: .5;
+        }
+
+
+        body.light .modal {
+
+            background:
+                rgba(20,30,45,.25);
+        }
+
+
+        body.light .modal-box {
+
+            background:
+                rgba(255,255,255,.96);
+
+            border-color:
+                rgba(0,0,0,.08);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,.2);
+        }
+
+
+        body.light .announcement-detail-icon {
+
+            background:
+                rgba(0,114,255,.08);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media(max-width: 900px) {
 
             .sidebar {
+
                 width: 80px;
             }
 
+
             .logo {
+
                 font-size: 0;
+
                 text-align: center;
             }
 
+
             .logo span {
+
                 font-size: 22px;
             }
 
+
             .menu a {
+
                 text-align: center;
+
                 font-size: 0;
             }
 
+
             .menu a::first-letter {
+
                 font-size: 20px;
             }
 
+
             .content-grid {
+
                 grid-template-columns: 1fr;
             }
         }
+
 
         @media(max-width: 650px) {
 
             .layout {
+
                 display: block;
             }
 
+
             .sidebar {
+
                 width: 100%;
+
                 height: auto;
+
                 border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,.12);
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,.12);
+
                 padding: 12px;
             }
 
-            .logo {
+
+            .sidebar .logo {
+
                 font-size: 20px;
+
                 margin-bottom: 10px;
             }
 
+
             .menu {
+
                 flex-direction: row;
+
                 overflow-x: auto;
             }
 
+
             .menu a {
+
                 white-space: nowrap;
+
                 font-size: 13px;
             }
 
+
             .logout {
+
                 margin-top: 0;
             }
 
+
             .main {
+
                 padding: 18px;
             }
 
+
             .stats {
+
                 grid-template-columns: 1fr;
             }
 
+
             .topbar {
+
                 align-items: flex-start;
             }
 
+
             .welcome h1 {
+
                 font-size: 22px;
             }
+
+
+            .notification-panel {
+
+                position: fixed;
+
+                top: 75px;
+
+                right: 18px;
+                left: 18px;
+
+                width: auto;
+
+                max-width: none;
+            }
+
+
+            .modal {
+
+                padding: 15px;
+            }
+
+
+            .modal-box {
+
+                max-height:
+                    calc(100vh - 30px);
+
+                padding: 18px;
+            }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="background-orb orb1"></div>
-<div class="background-orb orb2"></div>
+    <div class="background-orb orb1"></div>
 
-<div class="layout">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            EMPLOYEE <span>PORTAL</span>
-        </div>
-
-        <nav class="menu">
-
-            <a href="dashboard.html" class="active">
-                🏠 Dashboard
-            </a>
-
-            <a href="tickets.html">
-                🎫 My Tickets
-            </a>
-
-            <a href="new-ticket.html">
-                ➕ New Ticket
-            </a>
-
-            <a href="profile.html">
-                👤 My Profile
-            </a>
-            
-            <a href="#">
-                📄 HR Policies
-            </a>
-
-            <a href="#">
-                ⚙️ Settings
-            </a>
-
-            <a href="#" class="logout" onclick="logout()">
-                🚪 Logout
-            </a>
-
-        </nav>
-
-    </aside>
+    <div class="background-orb orb2"></div>
 
 
-    <!-- MAIN -->
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <div class="welcome">
-                <h1>Welcome back 👋</h1>
-                <p>Here's what's happening with your HR requests.</p>
-            </div>
-
-            <div class="top-actions">
-
-                <button class="icon-btn" onclick="toggleTheme()">
-                    🌙
-                </button>
-
-                <div class="notification-wrapper">
-
-    <button
-        class="icon-btn notification-btn"
-        onclick="toggleNotifications()"
-    >
-        🔔
-
-        <span
-            id="notificationBadge"
-            class="notification-badge"
-            style="display:none;"
-        >
-            0
-        </span>
-
-    </button>
+    <div class="layout">
 
 
-    <div
-        id="notificationPanel"
-        class="notification-panel"
-    >
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
 
-        <div class="notification-header">
-
-            <strong>🔔 Notifications</strong>
-
-            <button
-                onclick="markNotificationsRead()"
-                class="mark-read"
-            >
-                Mark all read
-            </button>
-
-        </div>
+        <aside class="sidebar">
 
 
-        <div id="notificationList">
+            <div class="logo">
 
-            <div class="no-notifications">
-                No new notifications
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
+                EMPLOYEE
+                <span>PORTAL</span>
 
             </div>
 
-        </div>
+
+            <nav class="menu">
 
 
-        <!-- STATISTICS -->
-
-        <section class="stats">
-
-    <div class="card">
-
-        <div class="stat-title">
-            Open Tickets
-        </div>
-
-        <div
-            class="stat-number blue"
-            id="openCount"
-        >
-            00
-        </div>
-
-    </div>
+                <a
+                    href="dashboard.html"
+                    class="active"
+                >
+                    🏠 Dashboard
+                </a>
 
 
-    <div class="card">
-
-        <div class="stat-title">
-            Pending Tickets
-        </div>
-
-        <div
-            class="stat-number yellow"
-            id="pendingCount"
-        >
-            00
-        </div>
-
-    </div>
+                <a href="tickets.html">
+                    🎫 My Tickets
+                </a>
 
 
-    <div class="card">
-
-        <div class="stat-title">
-            Resolved Tickets
-        </div>
-
-        <div
-            class="stat-number green"
-            id="resolvedCount"
-        >
-            00
-        </div>
-
-    </div>
-
-</section>
-
-        <!-- CONTENT -->
-
-        <section class="content-grid">
+                <a href="new-ticket.html">
+                    ➕ New Ticket
+                </a>
 
 
-            <!-- RECENT TICKETS -->
-
-<div class="card">
-
-    <div class="card-header">
-
-        <h2>Recent Tickets</h2>
-
-        <a
-            href="tickets.html"
-            class="view-all"
-        >
-            View All
-        </a>
-
-    </div>
+                <a href="profile.html">
+                    👤 My Profile
+                </a>
 
 
-    <div id="recentTickets">
-
-        <div style="opacity:.6;">
-            Loading tickets...
-        </div>
-
-    </div>
-
-</div>
-                 
-
-            <!-- RIGHT SIDE -->
-
-            <div>
+                <a href="#">
+                    📄 HR Policies
+                </a>
 
 
-                <!-- QUICK ACTION -->
+                <a href="#">
+                    ⚙️ Settings
+                </a>
 
-                <div class="card quick-action">
 
-                    <div class="card-header">
-                        <h2>Need Help?</h2>
-                    </div>
+                <a
+                    href="#"
+                    class="logout"
+                    onclick="logout()"
+                >
+                    🚪 Logout
+                </a>
+
+
+            </nav>
+
+        </aside>
+
+
+
+        <!-- =========================
+             MAIN
+        ========================= -->
+
+        <main class="main">
+
+
+            <!-- TOPBAR -->
+
+            <div class="topbar">
+
+
+                <div class="welcome">
+
+                    <h1>
+                        Welcome back 👋
+                    </h1>
 
                     <p>
-                        Have an HR related issue?
-                        Create a new support ticket and our HR team
-                        will get back to you.
+                        Here's what's happening
+                        with your HR requests.
                     </p>
 
+                </div>
+
+
+                <div class="top-actions">
+
+
                     <button
-                       class="primary-btn"
-                       onclick="window.location.href='new-ticket.html'"
+                        class="icon-btn"
+                        onclick="toggleTheme()"
                     >
-                       + Raise New Ticket
+                        🌙
                     </button>
 
-                </div>
 
 
-                <!-- ANNOUNCEMENTS -->
+                    <!-- NOTIFICATION -->
 
-                <div class="card announcements-card">
-    <div class="card-header">
-        <h2>📢 Announcements</h2>
-        <span id="announcementCount" class="announcement-count">0</span>
-    </div>
-
-    <div id="employeeAnnouncements">
-        <div style="text-align:center;padding:25px 10px;opacity:.6;">
-            Loading announcements...
-        </div>
-    </div>
-</div>
-        </section>
-
-    </main>
-
-</div>
-<!-- ANNOUNCEMENT DETAIL MODAL -->
-
-<div id="announcementDetailModal"
-     class="modal"
-     onclick="closeAnnouncementDetailOutside(event)">
-
-    <div class="modal-box announcement-detail-box"
-         onclick="event.stopPropagation()">
-
-        <div class="modal-header">
-
-            <h2 id="announcementDetailTitle">
-                📢 Announcement
-            </h2>
-
-            <button class="close-btn"
-                    onclick="closeAnnouncementDetail()">
-                ✕
-            </button>
-
-        </div>
-
-        <div class="announcement-detail-content">
-
-            <div id="announcementDetailIcon"
-                 class="announcement-detail-icon">
-                📢
-            </div>
-
-            <div id="announcementDetailMessage"
-                 class="announcement-detail-message">
-            </div>
-
-            <div id="announcementDetailTime"
-                 class="announcement-detail-time">
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-
-    /* CHECK LOGIN */
-
-    const role = localStorage.getItem("hr-user-role");
-
-    if (role !== "employee") {
-        window.location.href = "../index.html";
-    }
+                    <div class="notification-wrapper">
 
 
-    /* THEME */
+                        <button
+                            class="icon-btn notification-btn"
+                            onclick="toggleNotifications()"
+                        >
 
-    function toggleTheme() {
+                            🔔
 
-        document.body.classList.toggle("light");
+                            <span
+                                id="notificationBadge"
+                                class="notification-badge"
+                                style="display:none;"
+                            >
+                                0
+                            </span>
 
-        const isLight =
-            document.body.classList.contains("light");
-
-        localStorage.setItem(
-            "hr-theme",
-            isLight ? "light" : "dark"
-        );
-    }
-
-
-    /* LOAD THEME */
-
-    const savedTheme =
-        localStorage.getItem("hr-theme");
-
-    if (savedTheme === "light") {
-        document.body.classList.add("light");
-    }
+                        </button>
 
 
-        /* LOAD EMPLOYEE TICKETS */
+                        <div
+                            id="notificationPanel"
+                            class="notification-panel"
+                        >
 
-    function getEmployeeAnnouncements() {
-    return JSON.parse(
-        localStorage.getItem("hr-announcements") || "[]"
-    );
-}
 
-function loadEmployeeAnnouncements() {
+                            <div
+                                class="notification-header"
+                            >
 
-    const announcements = getEmployeeAnnouncements();
+                                <strong>
+                                    🔔 Notifications
+                                </strong>
 
-    const container =
-        document.getElementById("employeeAnnouncements");
 
-    const count =
-        document.getElementById("announcementCount");
+                                <button
+                                    onclick="markNotificationsRead()"
+                                    class="mark-read"
+                                >
+                                    Mark all read
+                                </button>
 
-    if (!container || !count) return;
+                            </div>
 
-    count.textContent = announcements.length;
 
-    if (announcements.length === 0) {
+                            <div
+                                id="notificationList"
+                            >
 
-        container.innerHTML = `
-            <div class="announcement-empty">
-                📢
-                <div style="margin-top:8px;">
-                    No announcements yet
-                </div>
-            </div>
-        `;
+                                <div
+                                    class="no-notifications"
+                                >
+                                    No new notifications
+                                </div>
 
-        return;
-    }
+                            </div>
 
-    /*
-       Latest announcement पहले दिखेगा
-    */
-    const latestAnnouncements =
-        announcements.slice().reverse();
 
-    container.innerHTML =
-        latestAnnouncements.map((announcement, index) => {
+                        </div>
 
-            const isNew = index === 0;
 
-            return `
-                <div class="announcement ${isNew ? "announcement-new" : ""}"
-     onclick="openAnnouncementDetail('${escapeHtml(announcement.id)}')">
-
-                    <div class="announcement-icon">
-                        ${escapeHtml(announcement.icon || "📢")}
                     </div>
 
-                    <div class="announcement-content">
 
-                        <strong>
-                            ${escapeHtml(
-                                announcement.title ||
-                                "Announcement"
-                            )}
+                </div>
 
-                            ${isNew ? `
-                                <span class="announcement-new-badge">
-                                    NEW
-                                </span>
-                            ` : ""}
-                        </strong>
+
+            </div>
+
+
+
+            <!-- =========================
+                 STATISTICS
+            ========================= -->
+
+            <section class="stats">
+
+
+                <div class="card">
+
+                    <div class="stat-title">
+                        Open Tickets
+                    </div>
+
+
+                    <div
+                        class="stat-number blue"
+                        id="openCount"
+                    >
+                        00
+                    </div>
+
+                </div>
+
+
+
+                <div class="card">
+
+                    <div class="stat-title">
+                        Pending Tickets
+                    </div>
+
+
+                    <div
+                        class="stat-number yellow"
+                        id="pendingCount"
+                    >
+                        00
+                    </div>
+
+                </div>
+
+
+
+                <div class="card">
+
+                    <div class="stat-title">
+                        Resolved Tickets
+                    </div>
+
+
+                    <div
+                        class="stat-number green"
+                        id="resolvedCount"
+                    >
+                        00
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 CONTENT
+            ========================= -->
+
+            <section class="content-grid">
+
+
+                <!-- RECENT TICKETS -->
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <h2>
+                            Recent Tickets
+                        </h2>
+
+
+                        <a
+                            href="tickets.html"
+                            class="view-all"
+                        >
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div id="recentTickets">
+
+                        <div
+                            style="opacity:.6;"
+                        >
+                            Loading tickets...
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- RIGHT SIDE -->
+
+                <div>
+
+
+                    <!-- QUICK ACTION -->
+
+                    <div
+                        class="card quick-action"
+                    >
+
+
+                        <div class="card-header">
+
+                            <h2>
+                                Need Help?
+                            </h2>
+
+                        </div>
+
 
                         <p>
-                            ${escapeHtml(
-                                announcement.message || ""
-                            )}
+
+                            Have an HR related issue?
+
+                            Create a new support
+                            ticket and our HR team
+                            will get back to you.
+
                         </p>
 
-                        <small>
-                            ${escapeHtml(
-                                announcement.createdAt || ""
-                            )}
-                        </small>
+
+                        <button
+                            class="primary-btn"
+                            onclick="
+                                window.location.href=
+                                'new-ticket.html'
+                            "
+                        >
+                            + Raise New Ticket
+                        </button>
+
 
                     </div>
 
+
+
+                    <!-- ANNOUNCEMENTS -->
+
+                    <div
+                        class="card announcements-card"
+                    >
+
+
+                        <div class="card-header">
+
+                            <h2>
+                                📢 Announcements
+                            </h2>
+
+
+                            <span
+                                id="announcementCount"
+                                class="announcement-count"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="employeeAnnouncements"
+                        >
+
+                            <div
+                                style="
+                                    text-align:center;
+                                    padding:25px 10px;
+                                    opacity:.6;
+                                "
+                            >
+                                Loading announcements...
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
                 </div>
-            `;
-
-        }).join("");
-}
-
-loadEmployeeAnnouncements();
-
-    function openAnnouncementDetail(id) {
-
-    const announcements = getEmployeeAnnouncements();
-
-    const announcement = announcements.find(
-        item => String(item.id) === String(id)
-    );
-
-    if (!announcement) return;
-
-    document.getElementById(
-        "announcementDetailTitle"
-    ).textContent =
-        (announcement.icon || "📢") + " " +
-        (announcement.title || "Announcement");
-
-    document.getElementById(
-        "announcementDetailIcon"
-    ).textContent =
-        announcement.icon || "📢";
-
-    document.getElementById(
-        "announcementDetailMessage"
-    ).textContent =
-        announcement.message || "";
-
-    document.getElementById(
-        "announcementDetailTime"
-    ).textContent =
-        announcement.createdAt || "";
-
-    document
-        .getElementById("announcementDetailModal")
-        .classList.add("show");
-}
 
 
-function closeAnnouncementDetail() {
-
-    document
-        .getElementById("announcementDetailModal")
-        .classList.remove("show");
-}
+            </section>
 
 
-function closeAnnouncementDetailOutside(event) {
+        </main>
 
-    if (
-        event.target.id ===
-        "announcementDetailModal"
-    ) {
-        closeAnnouncementDetail();
-    }
-}
-    
-    function loadDashboardTickets() {
 
-        const tickets =
-            JSON.parse(
-                localStorage.getItem("hr-tickets") || "[]"
+    </div>
+
+
+
+    <!-- =========================
+         ANNOUNCEMENT DETAIL MODAL
+    ========================= -->
+
+    <div
+        id="announcementDetailModal"
+        class="modal"
+        onclick="
+            closeAnnouncementDetailOutside(event)
+        "
+    >
+
+
+        <div
+            class="modal-box announcement-detail-box"
+            onclick="
+                event.stopPropagation()
+            "
+        >
+
+
+            <div class="modal-header">
+
+
+                <h2
+                    id="announcementDetailTitle"
+                >
+                    📢 Announcement
+                </h2>
+
+
+                <button
+                    class="close-btn"
+                    onclick="
+                        closeAnnouncementDetail()
+                    "
+                >
+                    ✕
+                </button>
+
+
+            </div>
+
+
+            <div
+                class="announcement-detail-content"
+            >
+
+
+                <div
+                    id="announcementDetailIcon"
+                    class="announcement-detail-icon"
+                >
+                    📢
+                </div>
+
+
+                <div
+                    id="announcementDetailMessage"
+                    class="announcement-detail-message"
+                >
+                </div>
+
+
+                <div
+                    id="announcementDetailTime"
+                    class="announcement-detail-time"
+                >
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /* =========================
+           CHECK LOGIN
+        ========================= */
+
+        const role =
+            localStorage.getItem(
+                "hr-user-role"
             );
 
 
-        /* =========================
-           STATISTICS
-        ========================= */
+        if (role !== "employee") {
 
-        const openTickets =
-            tickets.filter(
-                ticket =>
-                    String(ticket.status).toLowerCase() === "open"
-            ).length;
-
-
-        const pendingTickets =
-            tickets.filter(
-                ticket =>
-                    String(ticket.status).toLowerCase() === "pending"
-            ).length;
-
-
-        const resolvedTickets =
-            tickets.filter(
-                ticket =>
-                    String(ticket.status).toLowerCase() === "resolved"
-            ).length;
-
-
-        document.getElementById("openCount").textContent =
-            String(openTickets).padStart(2, "0");
-
-
-        document.getElementById("pendingCount").textContent =
-            String(pendingTickets).padStart(2, "0");
-
-
-        document.getElementById("resolvedCount").textContent =
-            String(resolvedTickets).padStart(2, "0");
-
-
-        /* =========================
-           RECENT TICKETS
-        ========================= */
-
-        const recentContainer =
-            document.getElementById("recentTickets");
-
-
-        if (tickets.length === 0) {
-
-            recentContainer.innerHTML = `
-
-                <div style="
-                    text-align:center;
-                    padding:30px 10px;
-                    opacity:.6;
-                ">
-
-                    🎫
-
-                    <div style="margin-top:8px;">
-                        No tickets yet
-                    </div>
-
-                </div>
-
-            `;
-
-            return;
+            window.location.href =
+                "../index.html";
         }
 
 
-        /*
-         * Latest 3 tickets
-         */
 
-        const recentTickets =
-            tickets
-                .slice()
-                .reverse()
-                .slice(0, 3);
+        /* =========================
+           THEME
+        ========================= */
+
+        function toggleTheme() {
+
+            document.body.classList.toggle(
+                "light"
+            );
 
 
-        recentContainer.innerHTML =
-            recentTickets.map(ticket => {
+            const isLight =
+                document.body.classList.contains(
+                    "light"
+                );
 
-                const status =
-                    String(
-                        ticket.status || "Open"
-                    ).toLowerCase();
 
+            localStorage.setItem(
+                "hr-theme",
+                isLight
+                    ? "light"
+                    : "dark"
+            );
+
+        }
+
+
+
+        /* LOAD THEME */
+
+        const savedTheme =
+            localStorage.getItem(
+                "hr-theme"
+            );
+
+
+        if (savedTheme === "light") {
+
+            document.body.classList.add(
+                "light"
+            );
+        }
+
+
+
+        /* =========================
+           HTML SECURITY
+        ========================= */
+
+        function escapeHtml(text) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.textContent =
+                text ?? "";
+
+
+            return div.innerHTML;
+        }
+
+
+
+        /* =========================
+           ANNOUNCEMENTS
+        ========================= */
+
+        function getEmployeeAnnouncements() {
+
+            try {
+
+                const saved =
+                    localStorage.getItem(
+                        "hr-announcements"
+                    );
+
+
+                if (!saved) {
+
+                    return [];
+                }
+
+
+                const announcements =
+                    JSON.parse(saved);
+
+
+                if (
+                    !Array.isArray(
+                        announcements
+                    )
+                ) {
+
+                    return [];
+                }
+
+
+                return announcements;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Announcement data error:",
+                    error
+                );
+
+
+                return [];
+            }
+
+        }
+
+
+
+        function loadEmployeeAnnouncements() {
+
+            const container =
+                document.getElementById(
+                    "employeeAnnouncements"
+                );
+
+
+            const count =
+                document.getElementById(
+                    "announcementCount"
+                );
+
+
+            if (
+                !container ||
+                !count
+            ) {
+
+                return;
+            }
+
+
+            const announcements =
+                getEmployeeAnnouncements();
+
+
+            count.textContent =
+                announcements.length;
+
+
+            /* NO ANNOUNCEMENTS */
+
+            if (
+                announcements.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div
+                        class="announcement-empty"
+                    >
+
+                        📢
+
+                        <div
+                            style="
+                                margin-top:8px;
+                            "
+                        >
+                            No announcements yet
+                        </div>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+
+            /* LATEST FIRST */
+
+            const latestAnnouncements =
+                announcements
+                    .slice()
+                    .reverse();
+
+
+
+            container.innerHTML =
+                latestAnnouncements
+                    .map(
+                        (
+                            announcement,
+                            index
+                        ) => {
+
+
+                            const isNew =
+                                index === 0;
+
+
+                            return `
+
+                                <div
+                                    class="
+                                        announcement
+                                        ${
+                                            isNew
+                                            ?
+                                            "announcement-new"
+                                            :
+                                            ""
+                                        }
+                                    "
+                                    onclick="
+                                        openAnnouncementDetail(
+                                            '${String(
+                                                announcement.id || ""
+                                            ).replace(
+                                                /'/g,
+                                                "\\'"
+                                            )}'
+                                        )
+                                    "
+                                >
+
+
+                                    <div
+                                        class="
+                                            announcement-icon
+                                        "
+                                    >
+
+                                        ${escapeHtml(
+                                            announcement.icon ||
+                                            "📢"
+                                        )}
+
+                                    </div>
+
+
+
+                                    <div
+                                        class="
+                                            announcement-content
+                                        "
+                                    >
+
+
+                                        <strong>
+
+                                            ${escapeHtml(
+                                                announcement.title ||
+                                                "Announcement"
+                                            )}
+
+
+                                            ${
+                                                isNew
+                                                ?
+                                                `
+                                                <span
+                                                    class="
+                                                        announcement-new-badge
+                                                    "
+                                                >
+                                                    NEW
+                                                </span>
+                                                `
+                                                :
+                                                ""
+                                            }
+
+                                        </strong>
+
+
+
+                                        <p>
+
+                                            ${escapeHtml(
+                                                announcement.message ||
+                                                ""
+                                            )}
+
+                                        </p>
+
+
+
+                                        <small>
+
+                                            ${escapeHtml(
+                                                announcement.createdAt ||
+                                                ""
+                                            )}
+
+                                        </small>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+
+        /* =========================
+           ANNOUNCEMENT DETAIL
+        ========================= */
+
+        function openAnnouncementDetail(id) {
+
+
+            const announcements =
+                getEmployeeAnnouncements();
+
+
+            const announcement =
+                announcements.find(
+                    item =>
+                        String(item.id) ===
+                        String(id)
+                );
+
+
+            if (!announcement) {
+
+                return;
+            }
+
+
+
+            document.getElementById(
+                "announcementDetailTitle"
+            ).textContent =
+
+                (announcement.icon ||
+                    "📢") +
+
+                " " +
+
+                (
+                    announcement.title ||
+                    "Announcement"
+                );
+
+
+
+            document.getElementById(
+                "announcementDetailIcon"
+            ).textContent =
+
+                announcement.icon ||
+                "📢";
+
+
+
+            document.getElementById(
+                "announcementDetailMessage"
+            ).textContent =
+
+                announcement.message ||
+                "";
+
+
+
+            document.getElementById(
+                "announcementDetailTime"
+            ).textContent =
+
+                announcement.createdAt ||
+                "";
+
+
+
+            document
+                .getElementById(
+                    "announcementDetailModal"
+                )
+                .classList.add("show");
+
+        }
+
+
+
+        function closeAnnouncementDetail() {
+
+            document
+                .getElementById(
+                    "announcementDetailModal"
+                )
+                .classList.remove("show");
+
+        }
+
+
+
+        function closeAnnouncementDetailOutside(
+            event
+        ) {
+
+            if (
+                event.target.id ===
+                "announcementDetailModal"
+            ) {
+
+                closeAnnouncementDetail();
+            }
+
+        }
+
+
+
+        /* =========================
+           LOAD EMPLOYEE TICKETS
+        ========================= */
+
+        function loadDashboardTickets() {
+
+
+            const tickets =
+                JSON.parse(
+                    localStorage.getItem(
+                        "hr-tickets"
+                    ) || "[]"
+                );
+
+
+
+            /* STATISTICS */
+
+            const openTickets =
+                tickets.filter(
+                    ticket =>
+                        String(
+                            ticket.status
+                        ).toLowerCase()
+                        === "open"
+                ).length;
+
+
+
+            const pendingTickets =
+                tickets.filter(
+                    ticket =>
+                        String(
+                            ticket.status
+                        ).toLowerCase()
+                        === "pending"
+                ).length;
+
+
+
+            const resolvedTickets =
+                tickets.filter(
+                    ticket =>
+                        String(
+                            ticket.status
+                        ).toLowerCase()
+                        === "resolved"
+                ).length;
+
+
+
+            document.getElementById(
+                "openCount"
+            ).textContent =
+
+                String(
+                    openTickets
+                ).padStart(2, "0");
+
+
+
+            document.getElementById(
+                "pendingCount"
+            ).textContent =
+
+                String(
+                    pendingTickets
+                ).padStart(2, "0");
+
+
+
+            document.getElementById(
+                "resolvedCount"
+            ).textContent =
+
+                String(
+                    resolvedTickets
+                ).padStart(2, "0");
+
+
+
+            /* RECENT TICKETS */
+
+            const recentContainer =
+                document.getElementById(
+                    "recentTickets"
+                );
+
+
+            if (
+                tickets.length === 0
+            ) {
+
+                recentContainer.innerHTML = `
+
+                    <div
+                        style="
+                            text-align:center;
+                            padding:30px 10px;
+                            opacity:.6;
+                        "
+                    >
+
+                        🎫
+
+                        <div
+                            style="
+                                margin-top:8px;
+                            "
+                        >
+                            No tickets yet
+                        </div>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+
+            /* LATEST 3 */
+
+            const recentTickets =
+                tickets
+                    .slice()
+                    .reverse()
+                    .slice(0, 3);
+
+
+
+            recentContainer.innerHTML =
+
+                recentTickets
+                    .map(ticket => {
+
+
+                        const status =
+                            String(
+                                ticket.status ||
+                                "Open"
+                            ).toLowerCase();
+
+
+
+                        let replies = [];
+
+
+
+                        if (
+                            Array.isArray(
+                                ticket.adminReplies
+                            )
+                        ) {
+
+                            replies =
+                                ticket.adminReplies;
+
+                        }
+
+                        else if (
+                            ticket.adminReply
+                        ) {
+
+                            replies = [
+
+                                {
+
+                                    text:
+                                        ticket.adminReply,
+
+                                    createdAt:
+                                        ticket.adminReplyAt ||
+                                        ""
+
+                                }
+
+                            ];
+
+                        }
+
+
+
+                        const latestReply =
+                            replies.length > 0
+                            ?
+                            replies[
+                                replies.length - 1
+                            ]
+                            :
+                            null;
+
+
+
+                        return `
+
+                            <div
+                                class="ticket"
+                            >
+
+
+                                <div
+                                    style="
+                                        min-width:0;
+                                    "
+                                >
+
+
+                                    <div
+                                        class="ticket-title"
+                                    >
+
+                                        ${escapeHtml(
+                                            ticket.subject ||
+                                            "Untitled Ticket"
+                                        )}
+
+                                    </div>
+
+
+
+                                    <div
+                                        class="ticket-id"
+                                    >
+
+                                        ${escapeHtml(
+                                            ticket.id ||
+                                            ""
+                                        )}
+
+                                    </div>
+
+
+
+                                    ${
+                                        latestReply
+                                        ?
+                                        `
+                                        <div
+                                            class="
+                                                admin-reply-preview
+                                            "
+                                        >
+
+                                            <div
+                                                class="
+                                                    admin-reply-title
+                                                "
+                                            >
+                                                💬 Latest Admin Reply
+                                            </div>
+
+
+                                            <div
+                                                class="
+                                                    admin-reply-text
+                                                "
+                                            >
+
+                                                ${escapeHtml(
+                                                    latestReply.text ||
+                                                    ""
+                                                )}
+
+                                            </div>
+
+                                        </div>
+                                        `
+                                        :
+                                        ""
+                                    }
+
+
+                                </div>
+
+
+
+                                <span
+                                    class="
+                                        status
+                                        ${escapeHtml(
+                                            status
+                                        )}
+                                    "
+                                >
+
+                                    ${escapeHtml(
+                                        ticket.status ||
+                                        "Open"
+                                    )}
+
+                                </span>
+
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("");
+
+        }
+
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        function logout() {
+
+            localStorage.removeItem(
+                "hr-user-role"
+            );
+
+
+            window.location.href =
+                "../index.html";
+        }
+
+
+
+        /* =========================
+           NOTIFICATIONS
+        ========================= */
+
+        function getNotifications() {
+
+
+            const tickets =
+                JSON.parse(
+                    localStorage.getItem(
+                        "hr-tickets"
+                    ) || "[]"
+                );
+
+
+            const notifications = [];
+
+
+
+            tickets.forEach(ticket => {
+
+
+                /* ADMIN REPLIES */
 
                 let replies = [];
+
 
 
                 if (
@@ -1414,16 +2695,22 @@ function closeAnnouncementDetailOutside(event) {
                         ticket.adminReplies;
 
                 }
-                else if (ticket.adminReply) {
+
+                else if (
+                    ticket.adminReply
+                ) {
 
                     replies = [
 
                         {
+
                             text:
                                 ticket.adminReply,
 
                             createdAt:
-                                ticket.adminReplyAt || ""
+                                ticket.adminReplyAt ||
+                                ""
+
                         }
 
                     ];
@@ -1431,477 +2718,618 @@ function closeAnnouncementDetailOutside(event) {
                 }
 
 
-                const latestReply =
-                    replies.length > 0
-                    ?
-                    replies[replies.length - 1]
-                    :
-                    null;
+
+                replies.forEach(
+                    (
+                        reply,
+                        index
+                    ) => {
 
 
-                return `
+                        notifications.push({
 
-                    <div class="ticket">
+                            id:
+                                ticket.id +
+                                "-reply-" +
+                                index,
 
-                        <div style="min-width:0;">
 
-                            <div class="ticket-title">
+                            title:
+                                "💬 Admin replied",
 
-                                ${escapeHtml(
+
+                            message:
+                                (
                                     ticket.subject ||
-                                    "Untitled Ticket"
-                                )}
-
-                            </div>
-
-
-                            <div class="ticket-id">
-
-                                ${escapeHtml(
-                                    ticket.id || ""
-                                )}
-
-                            </div>
+                                    "Ticket"
+                                ) +
+                                " — " +
+                                (
+                                    reply.text ||
+                                    ""
+                                ),
 
 
-                            ${
-                                latestReply
+                            time:
+                                reply.createdAt ||
+                                "",
+
+
+                            type:
+                                "reply"
+
+                        });
+
+                    }
+                );
+
+
+
+                /* RESOLVED */
+
+                if (
+                    String(
+                        ticket.status
+                    ).toLowerCase()
+                    === "resolved"
+                ) {
+
+
+                    notifications.push({
+
+                        id:
+                            ticket.id +
+                            "-resolved",
+
+
+                        title:
+                            "✅ Ticket Resolved",
+
+
+                        message:
+                            (
+                                ticket.subject ||
+                                "Ticket"
+                            ) +
+                            " has been resolved.",
+
+
+                        time:
+                            ticket.updatedAt ||
+                            ticket.createdAt ||
+                            "",
+
+
+                        type:
+                            "resolved"
+
+                    });
+
+                }
+
+            });
+
+
+
+            /* =========================
+               ANNOUNCEMENTS
+            ========================= */
+
+            const announcements =
+                getEmployeeAnnouncements();
+
+
+
+            announcements.forEach(
+                announcement => {
+
+
+                    notifications.push({
+
+                        id:
+                            "announcement-" +
+                            announcement.id,
+
+
+                        title:
+                            (
+                                announcement.icon ||
+                                "📢"
+                            ) +
+                            " " +
+                            (
+                                announcement.title ||
+                                "Announcement"
+                            ),
+
+
+                        message:
+                            announcement.message ||
+                            "",
+
+
+                        time:
+                            announcement.createdAt ||
+                            "",
+
+
+                        type:
+                            "announcement"
+
+                    });
+
+                }
+            );
+
+
+
+            return notifications;
+
+        }
+
+
+
+        /* =========================
+           READ NOTIFICATIONS
+        ========================= */
+
+        function getReadNotifications() {
+
+            try {
+
+                return JSON.parse(
+                    localStorage.getItem(
+                        "hr-read-notifications"
+                    ) || "[]"
+                );
+
+            }
+
+            catch (error) {
+
+                return [];
+            }
+
+        }
+
+
+
+        function saveReadNotifications(
+            ids
+        ) {
+
+            localStorage.setItem(
+
+                "hr-read-notifications",
+
+                JSON.stringify(ids)
+
+            );
+
+        }
+
+
+
+        /* =========================
+           LOAD NOTIFICATIONS
+        ========================= */
+
+        function loadNotifications() {
+
+
+            const notifications =
+                getNotifications();
+
+
+            const readIds =
+                getReadNotifications();
+
+
+
+            const unread =
+                notifications.filter(
+                    notification =>
+                        !readIds.includes(
+                            notification.id
+                        )
+                );
+
+
+
+            const badge =
+                document.getElementById(
+                    "notificationBadge"
+                );
+
+
+
+            if (
+                unread.length > 0
+            ) {
+
+                badge.textContent =
+                    unread.length > 99
+                    ?
+                    "99+"
+                    :
+                    unread.length;
+
+
+                badge.style.display =
+                    "flex";
+
+            }
+
+            else {
+
+                badge.style.display =
+                    "none";
+            }
+
+
+
+            const list =
+                document.getElementById(
+                    "notificationList"
+                );
+
+
+
+            if (
+                notifications.length === 0
+            ) {
+
+                list.innerHTML = `
+
+                    <div
+                        class="no-notifications"
+                    >
+                        No notifications
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+
+            list.innerHTML =
+                notifications
+                    .slice()
+                    .reverse()
+                    .map(
+                        notification => {
+
+
+                            const unreadClass =
+                                readIds.includes(
+                                    notification.id
+                                )
                                 ?
-                                `
-                                <div class="admin-reply-preview">
+                                ""
+                                :
+                                "unread";
 
-                                    <div class="admin-reply-title">
-                                        💬 Latest Admin Reply
-                                    </div>
 
-                                    <div class="admin-reply-text">
+
+                            const safeId =
+                                String(
+                                    notification.id
+                                )
+                                .replace(
+                                    /'/g,
+                                    "\\'"
+                                );
+
+
+
+                            return `
+
+                                <div
+                                    class="
+                                        notification-item
+                                        ${unreadClass}
+                                    "
+                                    onclick="
+                                        openNotification(
+                                            '${safeId}'
+                                        )
+                                    "
+                                >
+
+
+                                    <div
+                                        class="
+                                            notification-title
+                                        "
+                                    >
 
                                         ${escapeHtml(
-                                            latestReply.text || ""
+                                            notification.title
                                         )}
 
                                     </div>
 
+
+
+                                    <div
+                                        class="
+                                            notification-message
+                                        "
+                                    >
+
+                                        ${escapeHtml(
+                                            notification.message
+                                        )}
+
+                                    </div>
+
+
+
+                                    <div
+                                        class="
+                                            notification-time
+                                        "
+                                    >
+
+                                        ${escapeHtml(
+                                            notification.time
+                                        )}
+
+                                    </div>
+
+
                                 </div>
-                                `
-                                :
-                                ""
-                            }
 
-                        </div>
+                            `;
 
-
-                        <span
-                            class="status ${escapeHtml(status)}"
-                        >
-
-                            ${escapeHtml(
-                                ticket.status || "Open"
-                            )}
-
-                        </span>
-
-                    </div>
-
-                `;
-
-            }).join("");
-
-    }
-
-
-    /* HTML SECURITY */
-
-    function escapeHtml(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            text ?? "";
-
-        return div.innerHTML;
-
-    }
-
-
-    /* LOAD DASHBOARD */
-
-    loadDashboardTickets();
-   
-
-    /* LOGOUT */
-
-    function logout() {
-
-        localStorage.removeItem("hr-user-role");
-
-        window.location.href = "../index.html";
-    }
-
-    /* =========================
-   NOTIFICATIONS
-========================= */
-
-function getNotifications() {
-
-    const tickets =
-        JSON.parse(
-            localStorage.getItem("hr-tickets") || "[]"
-        );
-
-    const notifications = [];
-
-
-    tickets.forEach(ticket => {
-
-        /* ADMIN REPLIES */
-
-        let replies = [];
-
-        if (Array.isArray(ticket.adminReplies)) {
-
-            replies = ticket.adminReplies;
-
-        }
-        else if (ticket.adminReply) {
-
-            replies = [
-                {
-                    text: ticket.adminReply,
-                    createdAt: ticket.adminReplyAt || ""
-                }
-            ];
-
-        }
-
-
-        replies.forEach((reply, index) => {
-
-            notifications.push({
-
-                id:
-                    ticket.id +
-                    "-reply-" +
-                    index,
-
-                title:
-                    "💬 Admin replied",
-
-                message:
-                    ticket.subject +
-                    " — " +
-                    (reply.text || ""),
-
-                time:
-                    reply.createdAt || "",
-
-                type:
-                    "reply"
-
-            });
-
-        });
-
-
-        /* RESOLVED */
-
-        if (
-            String(ticket.status).toLowerCase()
-            === "resolved"
-        ) {
-
-            notifications.push({
-
-                id:
-                    ticket.id +
-                    "-resolved",
-
-                title:
-                    "✅ Ticket Resolved",
-
-                message:
-                    ticket.subject +
-                    " has been resolved.",
-
-                time:
-                    ticket.updatedAt ||
-                    ticket.createdAt ||
-                    "",
-
-                type:
-                    "resolved"
-
-            });
-
-        }
-
-    });
-
-
-    /* ANNOUNCEMENTS */
-
-    const announcements = getEmployeeAnnouncements();
-
-announcements.forEach(announcement => {
-
-    notifications.push({
-        id: "announcement-" + announcement.id,
-        title: (announcement.icon || "📢") + " " + (
-            announcement.title || "Announcement"
-        ),
-        message: announcement.message || "",
-        time: announcement.createdAt || "",
-        type: "announcement"
-    });
-
-});
-
-    return notifications;
-
-}
-
-
-function getReadNotifications() {
-
-    return JSON.parse(
-        localStorage.getItem(
-            "hr-read-notifications"
-        ) || "[]"
-    );
-
-}
-
-
-function saveReadNotifications(ids) {
-
-    localStorage.setItem(
-        "hr-read-notifications",
-        JSON.stringify(ids)
-    );
-
-}
-
-
-function loadNotifications() {
-
-    const notifications =
-        getNotifications();
-
-    const readIds =
-        getReadNotifications();
-
-
-    const unread =
-        notifications.filter(
-            notification =>
-                !readIds.includes(notification.id)
-        );
-
-
-    const badge =
-        document.getElementById(
-            "notificationBadge"
-        );
-
-
-    if (unread.length > 0) {
-
-        badge.textContent =
-            unread.length > 99
-            ? "99+"
-            : unread.length;
-
-        badge.style.display =
-            "flex";
-
-    }
-    else {
-
-        badge.style.display =
-            "none";
-
-    }
-
-
-    const list =
-        document.getElementById(
-            "notificationList"
-        );
-
-
-    if (notifications.length === 0) {
-
-        list.innerHTML = `
-            <div class="no-notifications">
-                No notifications
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    list.innerHTML =
-        notifications
-            .slice()
-            .reverse()
-            .map(notification => {
-
-                const unreadClass =
-                    readIds.includes(
-                        notification.id
+                        }
                     )
-                    ? ""
-                    : "unread";
+                    .join("");
+
+        }
 
 
-                return `
 
-                    <div
-                        class="notification-item ${unreadClass}"
-                        onclick="openNotification('${escapeHtml(
-                            notification.id
-                        )}')"
-                    >
+        /* =========================
+           TOGGLE NOTIFICATIONS
+        ========================= */
 
-                        <div class="notification-title">
-
-                            ${escapeHtml(
-                                notification.title
-                            )}
-
-                        </div>
+        function toggleNotifications() {
 
 
-                        <div class="notification-message">
-
-                            ${escapeHtml(
-                                notification.message
-                            )}
-
-                        </div>
+            const panel =
+                document.getElementById(
+                    "notificationPanel"
+                );
 
 
-                        <div class="notification-time">
-
-                            ${escapeHtml(
-                                notification.time
-                            )}
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            })
-            .join("");
-
-}
-
-
-function toggleNotifications() {
-
-    const panel =
-        document.getElementById(
-            "notificationPanel"
-        );
-
-    panel.classList.toggle("show");
-
-    loadNotifications();
-
-}
-
-
-function markNotificationsRead() {
-
-    const notifications =
-        getNotifications();
-
-    const ids =
-        notifications.map(
-            notification =>
-                notification.id
-        );
-
-    saveReadNotifications(ids);
-
-    loadNotifications();
-
-}
-
-
-function openNotification(id) {
-
-    const readIds = getReadNotifications();
-
-    if (!readIds.includes(id)) {
-
-        readIds.push(id);
-
-        saveReadNotifications(readIds);
-    }
-
-    loadNotifications();
-
-
-    /*
-       Announcement notification
-    */
-
-    if (String(id).startsWith("announcement-")) {
-
-        const announcementId =
-            String(id).replace(
-                "announcement-",
-                ""
+            panel.classList.toggle(
+                "show"
             );
 
-        document
-            .getElementById("notificationPanel")
-            .classList.remove("show");
 
-        openAnnouncementDetail(
-            announcementId
+            loadNotifications();
+
+        }
+
+
+
+        /* =========================
+           MARK ALL READ
+        ========================= */
+
+        function markNotificationsRead() {
+
+
+            const notifications =
+                getNotifications();
+
+
+            const ids =
+                notifications.map(
+                    notification =>
+                        notification.id
+                );
+
+
+            saveReadNotifications(
+                ids
+            );
+
+
+            loadNotifications();
+
+        }
+
+
+
+        /* =========================
+           OPEN NOTIFICATION
+        ========================= */
+
+        function openNotification(
+            id
+        ) {
+
+
+            const readIds =
+                getReadNotifications();
+
+
+
+            if (
+                !readIds.includes(id)
+            ) {
+
+                readIds.push(id);
+
+                saveReadNotifications(
+                    readIds
+                );
+            }
+
+
+
+            loadNotifications();
+
+
+
+            /* ANNOUNCEMENT */
+
+            if (
+                String(id).startsWith(
+                    "announcement-"
+                )
+            ) {
+
+
+                const announcementId =
+                    String(id).replace(
+                        "announcement-",
+                        ""
+                    );
+
+
+
+                document
+                    .getElementById(
+                        "notificationPanel"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+
+
+                openAnnouncementDetail(
+                    announcementId
+                );
+
+
+                return;
+            }
+
+
+
+            /* ADMIN REPLY */
+
+            if (
+                String(id).includes(
+                    "-reply-"
+                )
+            ) {
+
+                window.location.href =
+                    "tickets.html";
+
+                return;
+            }
+
+
+
+            /* RESOLVED */
+
+            if (
+                String(id).endsWith(
+                    "-resolved"
+                )
+            ) {
+
+                window.location.href =
+                    "tickets.html";
+
+                return;
+            }
+
+        }
+
+
+
+        /* =========================
+           INITIAL LOAD
+        ========================= */
+
+        loadDashboardTickets();
+
+        loadEmployeeAnnouncements();
+
+        loadNotifications();
+
+
+
+        /* =========================
+           AUTO SYNC
+           ADMIN ↔ EMPLOYEE
+        ========================= */
+
+        window.addEventListener(
+            "storage",
+            function(event) {
+
+
+                if (
+                    event.key ===
+                    "hr-announcements"
+                ) {
+
+                    loadEmployeeAnnouncements();
+
+                    loadNotifications();
+
+                }
+
+
+                if (
+                    event.key ===
+                    "hr-tickets"
+                ) {
+
+                    loadDashboardTickets();
+
+                    loadNotifications();
+
+                }
+
+
+                if (
+                    event.key ===
+                    "hr-theme"
+                ) {
+
+                    const theme =
+                        localStorage.getItem(
+                            "hr-theme"
+                        );
+
+
+                    if (
+                        theme === "light"
+                    ) {
+
+                        document.body
+                            .classList
+                            .add("light");
+
+                    }
+
+                    else {
+
+                        document.body
+                            .classList
+                            .remove("light");
+                    }
+
+                }
+
+            }
         );
 
-        return;
-    }
 
+    </script>
 
-    /*
-       Ticket notification
-    */
-
-    if (String(id).includes("-reply-")) {
-
-        const ticketId =
-            String(id).split("-reply-")[0];
-
-        window.location.href =
-            "tickets.html";
-
-        return;
-    }
-
-
-    if (String(id).endsWith("-resolved")) {
-
-        window.location.href =
-            "tickets.html";
-
-        return;
-    }
-}
-
-/* LOAD NOTIFICATIONS */
-
-loadNotifications();
-    
-</script>
 
 </body>
+
 </html>
