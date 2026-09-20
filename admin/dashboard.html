@@ -1577,6 +1577,43 @@ function viewTicket(index) {
 
     details.dataset.ticketId = ticket.id;
 
+let replyHtml = "";
+
+if (ticket.adminReply) {
+
+    replyHtml = `
+
+        <div class="detail-description">
+
+            <div class="detail-label">
+                💬 Admin Reply
+            </div>
+
+            ${escapeHtml(ticket.adminReply)}
+
+            ${
+                ticket.adminReplyAt
+                ? `
+                    <div
+                        style="
+                            margin-top:10px;
+                            font-size:11px;
+                            opacity:.55;
+                        "
+                    >
+                        🕐 Replied:
+                        ${escapeHtml(ticket.adminReplyAt)}
+                    </div>
+                `
+                : ""
+            }
+
+        </div>
+
+    `;
+
+}
+    
     details.innerHTML = `
 
         <div class="detail-grid">
@@ -1698,6 +1735,8 @@ function viewTicket(index) {
             )}
 
         </div>
+
+        ${replyHtml}
 
     `;
 
