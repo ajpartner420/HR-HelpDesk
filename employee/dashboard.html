@@ -264,6 +264,43 @@
             color: #38e38b;
         }
 
+
+                /* ADMIN REPLY PREVIEW */
+
+        .admin-reply-preview {
+            margin-top: 15px;
+            padding: 12px;
+
+            border-radius: 12px;
+
+            background: rgba(0,198,255,.06);
+            border: 1px solid rgba(0,198,255,.12);
+        }
+
+        .admin-reply-title {
+            color: #00c6ff;
+            font-size: 12px;
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+        .admin-reply-text {
+            font-size: 13px;
+            line-height: 1.5;
+
+            opacity: .85;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.light .admin-reply-preview {
+            background: rgba(0,114,255,.05);
+            border-color: rgba(0,114,255,.12);
+        }
+        
         /* QUICK ACTION */
 
         .quick-action {
@@ -476,46 +513,54 @@
 
         <section class="stats">
 
-            <div class="card">
+    <div class="card">
 
-                <div class="stat-title">
-                    Open Tickets
-                </div>
+        <div class="stat-title">
+            Open Tickets
+        </div>
 
-                <div class="stat-number blue">
-                    04
-                </div>
+        <div
+            class="stat-number blue"
+            id="openCount"
+        >
+            00
+        </div>
 
-            </div>
-
-
-            <div class="card">
-
-                <div class="stat-title">
-                    Pending Tickets
-                </div>
-
-                <div class="stat-number yellow">
-                    02
-                </div>
-
-            </div>
+    </div>
 
 
-            <div class="card">
+    <div class="card">
 
-                <div class="stat-title">
-                    Resolved Tickets
-                </div>
+        <div class="stat-title">
+            Pending Tickets
+        </div>
 
-                <div class="stat-number green">
-                    18
-                </div>
+        <div
+            class="stat-number yellow"
+            id="pendingCount"
+        >
+            00
+        </div>
 
-            </div>
+    </div>
 
-        </section>
 
+    <div class="card">
+
+        <div class="stat-title">
+            Resolved Tickets
+        </div>
+
+        <div
+            class="stat-number green"
+            id="resolvedCount"
+        >
+            00
+        </div>
+
+    </div>
+
+</section>
 
         <!-- CONTENT -->
 
@@ -524,78 +569,32 @@
 
             <!-- RECENT TICKETS -->
 
-            <div class="card">
+<div class="card">
 
-                <div class="card-header">
+    <div class="card-header">
 
-                    <h2>Recent Tickets</h2>
+        <h2>Recent Tickets</h2>
 
-                    <a href="#" class="view-all">
-                        View All
-                    </a>
+        <a
+            href="tickets.html"
+            class="view-all"
+        >
+            View All
+        </a>
 
-                </div>
-
-
-                <div class="ticket">
-
-                    <div>
-                        <div class="ticket-title">
-                            Salary Slip Issue
-                        </div>
-
-                        <div class="ticket-id">
-                            #HR-1024
-                        </div>
-                    </div>
-
-                    <span class="status open">
-                        Open
-                    </span>
-
-                </div>
+    </div>
 
 
-                <div class="ticket">
+    <div id="recentTickets">
 
-                    <div>
-                        <div class="ticket-title">
-                            Leave Balance Correction
-                        </div>
+        <div style="opacity:.6;">
+            Loading tickets...
+        </div>
 
-                        <div class="ticket-id">
-                            #HR-1021
-                        </div>
-                    </div>
+    </div>
 
-                    <span class="status pending">
-                        Pending
-                    </span>
-
-                </div>
-
-
-                <div class="ticket">
-
-                    <div>
-                        <div class="ticket-title">
-                            ID Card Request
-                        </div>
-
-                        <div class="ticket-id">
-                            #HR-1018
-                        </div>
-                    </div>
-
-                    <span class="status resolved">
-                        Resolved
-                    </span>
-
-                </div>
-
-
-            </div>
-
+</div>
+                 
 
             <!-- RIGHT SIDE -->
 
@@ -710,6 +709,234 @@
         document.body.classList.add("light");
     }
 
+
+        /* LOAD EMPLOYEE TICKETS */
+
+    function loadDashboardTickets() {
+
+        const tickets =
+            JSON.parse(
+                localStorage.getItem("hr-tickets") || "[]"
+            );
+
+
+        /* =========================
+           STATISTICS
+        ========================= */
+
+        const openTickets =
+            tickets.filter(
+                ticket =>
+                    String(ticket.status).toLowerCase() === "open"
+            ).length;
+
+
+        const pendingTickets =
+            tickets.filter(
+                ticket =>
+                    String(ticket.status).toLowerCase() === "pending"
+            ).length;
+
+
+        const resolvedTickets =
+            tickets.filter(
+                ticket =>
+                    String(ticket.status).toLowerCase() === "resolved"
+            ).length;
+
+
+        document.getElementById("openCount").textContent =
+            String(openTickets).padStart(2, "0");
+
+
+        document.getElementById("pendingCount").textContent =
+            String(pendingTickets).padStart(2, "0");
+
+
+        document.getElementById("resolvedCount").textContent =
+            String(resolvedTickets).padStart(2, "0");
+
+
+        /* =========================
+           RECENT TICKETS
+        ========================= */
+
+        const recentContainer =
+            document.getElementById("recentTickets");
+
+
+        if (tickets.length === 0) {
+
+            recentContainer.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:30px 10px;
+                    opacity:.6;
+                ">
+
+                    🎫
+
+                    <div style="margin-top:8px;">
+                        No tickets yet
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /*
+         * Latest 3 tickets
+         */
+
+        const recentTickets =
+            tickets
+                .slice()
+                .reverse()
+                .slice(0, 3);
+
+
+        recentContainer.innerHTML =
+            recentTickets.map(ticket => {
+
+                const status =
+                    String(
+                        ticket.status || "Open"
+                    ).toLowerCase();
+
+
+                let replies = [];
+
+
+                if (
+                    Array.isArray(
+                        ticket.adminReplies
+                    )
+                ) {
+
+                    replies =
+                        ticket.adminReplies;
+
+                }
+                else if (ticket.adminReply) {
+
+                    replies = [
+
+                        {
+                            text:
+                                ticket.adminReply,
+
+                            createdAt:
+                                ticket.adminReplyAt || ""
+                        }
+
+                    ];
+
+                }
+
+
+                const latestReply =
+                    replies.length > 0
+                    ?
+                    replies[replies.length - 1]
+                    :
+                    null;
+
+
+                return `
+
+                    <div class="ticket">
+
+                        <div style="min-width:0;">
+
+                            <div class="ticket-title">
+
+                                ${escapeHtml(
+                                    ticket.subject ||
+                                    "Untitled Ticket"
+                                )}
+
+                            </div>
+
+
+                            <div class="ticket-id">
+
+                                ${escapeHtml(
+                                    ticket.id || ""
+                                )}
+
+                            </div>
+
+
+                            ${
+                                latestReply
+                                ?
+                                `
+                                <div class="admin-reply-preview">
+
+                                    <div class="admin-reply-title">
+                                        💬 Latest Admin Reply
+                                    </div>
+
+                                    <div class="admin-reply-text">
+
+                                        ${escapeHtml(
+                                            latestReply.text || ""
+                                        )}
+
+                                    </div>
+
+                                </div>
+                                `
+                                :
+                                ""
+                            }
+
+                        </div>
+
+
+                        <span
+                            class="status ${escapeHtml(status)}"
+                        >
+
+                            ${escapeHtml(
+                                ticket.status || "Open"
+                            )}
+
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* HTML SECURITY */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            text ?? "";
+
+        return div.innerHTML;
+
+    }
+
+
+    /* LOAD DASHBOARD */
+
+    loadDashboardTickets();
+    
 
     /* LOGOUT */
 
