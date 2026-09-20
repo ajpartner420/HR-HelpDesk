@@ -556,12 +556,28 @@ body.light .detail-item {
     white-space: pre-wrap;
     word-break: break-word;
     
-    min-height: 0;
-    height: auto;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
 
-    overflow: visible;
+    overflow: visible !important;
 
-    display: block;
+    display: block !important;
+}
+
+.detail-description .detail-label {
+    margin: 0 0 6px 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.detail-description > div:last-child {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    line-height: 1.5 !important;
 }
         .reply-history {
     margin-top: 14px;
