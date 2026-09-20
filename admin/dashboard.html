@@ -1575,6 +1575,8 @@ function viewTicket(index) {
     const details =
         document.getElementById("ticketDetails");
 
+    details.dataset.ticketId = ticket.id;
+
     details.innerHTML = `
 
         <div class="detail-grid">
@@ -1725,9 +1727,76 @@ function sendAdminReply() {
         return;
     }
 
-    alert(
-        "Reply box is ready.\n\nNext step will save this reply to the ticket."
+
+    /*
+        Get the ticket currently being viewed
+    */
+
+    const ticketId =
+        document
+            .getElementById("ticketDetails")
+            .dataset.ticketId;
+
+
+    if (!ticketId) {
+
+        alert("Ticket not found.");
+
+        return;
+    }
+
+
+    const tickets = getTickets();
+
+
+    const ticketIndex =
+        tickets.findIndex(
+            ticket =>
+                String(ticket.id) === String(ticketId)
+        );
+
+
+    if (ticketIndex === -1) {
+
+        alert("Ticket not found.");
+
+        return;
+    }
+
+
+    /*
+        Save admin reply
+    */
+
+    tickets[ticketIndex].adminReply = reply;
+
+    tickets[ticketIndex].adminReplyAt =
+        new Date().toLocaleString();
+
+
+    localStorage.setItem(
+        "hr-tickets",
+        JSON.stringify(tickets)
     );
+
+
+    /*
+        Clear textbox
+    */
+
+    document
+        .getElementById("adminReply")
+        .value = "";
+
+
+    alert("Reply sent successfully!");
+
+
+    /*
+        Refresh ticket details
+    */
+
+    viewTicket(ticketIndex);
 
 }
     
