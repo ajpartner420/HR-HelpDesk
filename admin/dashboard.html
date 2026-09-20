@@ -1586,41 +1586,48 @@ function viewTicket(index) {
 
 let replyHtml = "";
 
-if (ticket.adminReply) {
-
+if (Array.isArray(ticket.adminReplies) && ticket.adminReplies.length > 0) {
     replyHtml = `
-
         <div class="detail-description">
+            <div class="detail-label">💬 Reply History</div>
 
-            <div class="detail-label">
-                💬 Admin Reply
-            </div>
-
-            ${escapeHtml(ticket.adminReply)}
-
-            ${
-                ticket.adminReplyAt
-                ? `
-                    <div
-                        style="
-                            margin-top:10px;
-                            font-size:11px;
-                            opacity:.55;
-                        "
-                    >
-                        🕐 Replied:
-                        ${escapeHtml(ticket.adminReplyAt)}
+            ${ticket.adminReplies.map((reply, i) => `
+                <div style="
+                    margin-top:12px;
+                    padding:12px;
+                    border-radius:10px;
+                    background:rgba(255,255,255,.05);
+                    border:1px solid rgba(255,255,255,.07);
+                ">
+                    <div style="font-size:12px; opacity:.6; margin-bottom:6px;">
+                        Reply #${i + 1}
                     </div>
-                `
-                : ""
-            }
 
+                    <div style="
+                        white-space:pre-wrap;
+                        line-height:1.6;
+                    ">
+                        ${escapeHtml(reply.text)}
+                    </div>
+
+                    ${
+                        reply.createdAt
+                        ? `
+                            <div style="
+                                margin-top:8px;
+                                font-size:11px;
+                                opacity:.5;
+                            ">
+                                🕐 ${escapeHtml(reply.createdAt)}
+                            </div>
+                        `
+                        : ""
+                    }
+                </div>
+            `).join("")}
         </div>
-
     `;
-
-}
-    
+}    
     details.innerHTML = `
 
         <div class="detail-grid">
