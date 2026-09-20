@@ -378,6 +378,93 @@
             opacity: .6;
         }
 
+
+        /* ANNOUNCEMENTS */
+
+        .announcements-card {
+            overflow: hidden;
+        }
+
+        .announcement-count {
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background: rgba(0,198,255,.12);
+            color: #00c6ff;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .announcement {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 12px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .announcement:last-child {
+            border-bottom: none;
+        }
+
+        .announcement-icon {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(0,198,255,.12);
+
+            font-size: 18px;
+        }
+
+        .announcement-content {
+            min-width: 0;
+        }
+
+        .announcement-content strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 14px;
+        }
+
+        .announcement-content p {
+            margin: 0 0 5px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            opacity: .7;
+        }
+
+        .announcement-content small {
+            font-size: 11px;
+            opacity: .5;
+        }
+
+        body.light .announcement {
+            border-color: rgba(0,0,0,.08);
+        }
+
+        body.light .announcement-icon {
+            background: rgba(0,114,255,.08);
+        }
+        
+        
         /* MOBILE */
 
         @media(max-width: 900px) {
@@ -655,45 +742,69 @@
 
                 <!-- ANNOUNCEMENTS -->
 
-                <div class="card">
+                <div class="card announcements-card">
 
-                    <div class="card-header">
+    <div class="card-header">
 
-                        <h2>Announcements</h2>
+        <h2>📢 Announcements</h2>
 
-                    </div>
+        <span class="announcement-count">
+            2 New
+        </span>
 
-
-                    <div class="announcement">
-
-                        <strong>
-                            📢 New HR Policy
-                        </strong>
-
-                        <small>
-                            Updated leave policy is now available.
-                        </small>
-
-                    </div>
+    </div>
 
 
-                    <div class="announcement">
+    <div class="announcement">
 
-                        <strong>
-                            🎉 Holiday Notice
-                        </strong>
+        <div class="announcement-icon">
+            📢
+        </div>
 
-                        <small>
-                            Check the upcoming holiday schedule.
-                        </small>
+        <div class="announcement-content">
 
-                    </div>
+            <strong>
+                New HR Policy
+            </strong>
+
+            <p>
+                Updated leave policy is now available.
+            </p>
+
+            <small>
+                Today
+            </small>
+
+        </div>
+
+    </div>
 
 
-                </div>
+    <div class="announcement">
 
-            </div>
+        <div class="announcement-icon">
+            🎉
+        </div>
 
+        <div class="announcement-content">
+
+            <strong>
+                Holiday Notice
+            </strong>
+
+            <p>
+                Check the upcoming holiday schedule.
+            </p>
+
+            <small>
+                2 days ago
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
         </section>
 
     </main>
