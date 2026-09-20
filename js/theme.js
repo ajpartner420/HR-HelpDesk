@@ -235,23 +235,26 @@ loginForm.addEventListener(
 
 
             localStorage.setItem(
-                "hr-user-role",
-                selectedRole
-            );
+    "hr-user-role",
+    selectedRole
+);
 
 
-            /*
-             * STEP 2:
-             *
-             * Employee:
-             * employee/dashboard.html
-             *
-             * Admin:
-             * admin/dashboard.html
-             *
-             * अभी redirect intentionally नहीं किया गया है।
-             */
+/* ---------- REDIRECT ---------- */
 
+if (selectedRole === "employee") {
+
+    window.location.href =
+        "employee/dashboard.html";
+
+} else {
+
+    showMessage(
+        "Admin login successful. Admin Panel will be available in Step 4.",
+        "success"
+    );
+
+}
         } else {
 
             showMessage(
