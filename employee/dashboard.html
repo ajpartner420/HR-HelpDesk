@@ -639,6 +639,62 @@ body.light .notification-badge {
     font-size: 13px;
 }
 
+/* Announcement Detail Modal */
+
+.announcement-detail-box {
+    max-width: 600px;
+}
+
+.announcement-detail-content {
+    padding: 10px 0 5px;
+}
+
+.announcement-detail-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: rgba(0,198,255,.12);
+
+    font-size: 30px;
+}
+
+.announcement-detail-message {
+    font-size: 15px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    opacity: .85;
+}
+
+.announcement-detail-time {
+    margin-top: 18px;
+
+    font-size: 11px;
+
+    opacity: .5;
+}
+
+.announcement-new {
+    cursor: pointer;
+}
+
+.announcement-new:hover {
+    background: rgba(0,198,255,.05);
+}
+
+body.light .announcement-detail-icon {
+    background: rgba(0,114,255,.08);
+}
+        
 .announcement-new {
     position: relative;
 }
@@ -1108,7 +1164,8 @@ function loadEmployeeAnnouncements() {
             const isNew = index === 0;
 
             return `
-                <div class="announcement ${isNew ? "announcement-new" : ""}">
+                <div class="announcement ${isNew ? "announcement-new" : ""}"
+     onclick="openAnnouncementDetail('${escapeHtml(announcement.id)}')">
 
                     <div class="announcement-icon">
                         ${escapeHtml(announcement.icon || "📢")}
@@ -1150,6 +1207,61 @@ function loadEmployeeAnnouncements() {
 }
 
 loadEmployeeAnnouncements();
+
+    function openAnnouncementDetail(id) {
+
+    const announcements = getEmployeeAnnouncements();
+
+    const announcement = announcements.find(
+        item => String(item.id) === String(id)
+    );
+
+    if (!announcement) return;
+
+    document.getElementById(
+        "announcementDetailTitle"
+    ).textContent =
+        (announcement.icon || "📢") + " " +
+        (announcement.title || "Announcement");
+
+    document.getElementById(
+        "announcementDetailIcon"
+    ).textContent =
+        announcement.icon || "📢";
+
+    document.getElementById(
+        "announcementDetailMessage"
+    ).textContent =
+        announcement.message || "";
+
+    document.getElementById(
+        "announcementDetailTime"
+    ).textContent =
+        announcement.createdAt || "";
+
+    document
+        .getElementById("announcementDetailModal")
+        .classList.add("show");
+}
+
+
+function closeAnnouncementDetail() {
+
+    document
+        .getElementById("announcementDetailModal")
+        .classList.remove("show");
+}
+
+
+function closeAnnouncementDetailOutside(event) {
+
+    if (
+        event.target.id ===
+        "announcementDetailModal"
+    ) {
+        closeAnnouncementDetail();
+    }
+}
     
     function loadDashboardTickets() {
 
@@ -1375,6 +1487,49 @@ loadEmployeeAnnouncements();
     /* LOAD DASHBOARD */
 
     loadDashboardTickets();
+
+    <!-- ANNOUNCEMENT DETAIL MODAL -->
+
+<div id="announcementDetailModal"
+     class="modal"
+     onclick="closeAnnouncementDetailOutside(event)">
+
+    <div class="modal-box announcement-detail-box"
+         onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+
+            <h2 id="announcementDetailTitle">
+                📢 Announcement
+            </h2>
+
+            <button class="close-btn"
+                    onclick="closeAnnouncementDetail()">
+                ✕
+            </button>
+
+        </div>
+
+        <div class="announcement-detail-content">
+
+            <div id="announcementDetailIcon"
+                 class="announcement-detail-icon">
+                📢
+            </div>
+
+            <div id="announcementDetailMessage"
+                 class="announcement-detail-message">
+            </div>
+
+            <div id="announcementDetailTime"
+                 class="announcement-detail-time">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
     
 
     /* LOGOUT */
@@ -1683,25 +1838,66 @@ function markNotificationsRead() {
 
 function openNotification(id) {
 
-    const readIds =
-        getReadNotifications();
-
+    const readIds = getReadNotifications();
 
     if (!readIds.includes(id)) {
 
         readIds.push(id);
 
-        saveReadNotifications(
-            readIds
-        );
-
+        saveReadNotifications(readIds);
     }
-
 
     loadNotifications();
 
-}
 
+    /*
+       Announcement notification
+    */
+
+    if (String(id).startsWith("announcement-")) {
+
+        const announcementId =
+            String(id).replace(
+                "announcement-",
+                ""
+            );
+
+        document
+            .getElementById("notificationPanel")
+            .classList.remove("show");
+
+        openAnnouncementDetail(
+            announcementId
+        );
+
+        return;
+    }
+
+
+    /*
+       Ticket notification
+    */
+
+    if (String(id).includes("-reply-")) {
+
+        const ticketId =
+            String(id).split("-reply-")[0];
+
+        window.location.href =
+            "tickets.html";
+
+        return;
+    }
+
+
+    if (String(id).endsWith("-resolved")) {
+
+        window.location.href =
+            "tickets.html";
+
+        return;
+    }
+}
 
 /* LOAD NOTIFICATIONS */
 
