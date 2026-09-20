@@ -65,16 +65,44 @@
             backdrop-filter: blur(20px);
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 40px;
-            padding-left: 10px;
-        }
+        .sidebar .logo {
+    width: 100%;
+    height: 70px;
 
-        .logo span {
-            color: #00c6ff;
-        }
+    margin-bottom: 40px;
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #2478e8,
+        #00b8e8
+    );
+
+    color: white;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 10px 30px rgba(0,198,255,.18);
+}
+
+.sidebar .logo span {
+    color: #00c6ff;
+    font-size: 22px;
+}
 
         .menu {
             display: flex;
@@ -445,7 +473,7 @@
     <aside class="sidebar">
 
         <div class="logo">
-            HR <span>Helpdesk</span>
+            EMPLOYEE <span>PORTAL</span>
         </div>
 
         <nav class="menu">
