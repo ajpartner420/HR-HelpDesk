@@ -345,6 +345,41 @@ body::after {
     color: white;
 }
 
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: inherit;
+
+    cursor: pointer;
+    font-size: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    background: rgba(0,198,255,.10);
+}
+
 .modal-actions {
     display: flex;
     gap: 10px;
@@ -727,10 +762,18 @@ body.light .cancel-btn {
             </label>
 
             <input
-                type="password"
-                id="currentPassword"
-                placeholder="Enter current password"
-            >
+        type="password"
+        id="currentPassword"
+        placeholder="Enter current password"
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        onclick="togglePassword('currentPassword', this)"
+    >
+        👁️
+    </button>
 
         </div>
 
@@ -741,10 +784,18 @@ body.light .cancel-btn {
             </label>
 
             <input
-                type="password"
-                id="newPassword"
-                placeholder="Enter new password"
-            >
+        type="password"
+        id="newPassword"
+        placeholder="Enter new password"
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        onclick="togglePassword('newPassword', this)"
+    >
+        👁️
+    </button>
 
         </div>
 
@@ -755,10 +806,18 @@ body.light .cancel-btn {
             </label>
 
             <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm new password"
-            >
+        type="password"
+        id="confirmPassword"
+        placeholder="Confirm new password"
+    >
+
+    <button
+        type="button"
+        class="password-toggle"
+        onclick="togglePassword('confirmPassword', this)"
+    >
+        👁️
+    </button>
 
         </div>
 
@@ -1036,6 +1095,24 @@ function saveProfile() {
 
 
     /* PASSWORD CHANGE */
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+
+        input.type = "text";
+        button.textContent = "🙈";
+
+    } else {
+
+        input.type = "password";
+        button.textContent = "👁️";
+
+    }
+
+}
 
 function openPasswordModal() {
 
