@@ -872,6 +872,298 @@ body.light .reply-section textarea {
 
         }
 
+        /* ============================
+   ANNOUNCEMENT MANAGEMENT
+============================ */
+
+.announcement-management {
+    margin-top: 25px;
+}
+
+.announcement-create-btn {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #2478e8,
+        #00b8e8
+    );
+
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.announcement-create-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(0,198,255,.20);
+}
+
+.announcement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-announcement {
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+body.light .admin-announcement {
+    background:
+        rgba(0,0,0,.03);
+
+    border-color:
+        rgba(0,0,0,.08);
+}
+
+.admin-announcement-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-announcement-title {
+    font-size: 15px;
+    font-weight: bold;
+
+    margin-bottom: 6px;
+}
+
+.admin-announcement-message {
+    font-size: 13px;
+    line-height: 1.5;
+
+    opacity: .7;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.admin-announcement-time {
+    margin-top: 7px;
+
+    font-size: 11px;
+    opacity: .45;
+}
+
+.delete-announcement-btn {
+    flex-shrink: 0;
+
+    padding: 8px 11px;
+
+    border-radius: 9px;
+
+    border:
+        1px solid rgba(255,107,107,.25);
+
+    background:
+        rgba(255,107,107,.10);
+
+    color: #ff6b6b;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.delete-announcement-btn:hover {
+    background:
+        rgba(255,107,107,.20);
+}
+
+
+/* ANNOUNCEMENT MODAL */
+
+.announcement-modal {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 1100;
+
+    background:
+        rgba(0,0,0,.65);
+
+    backdrop-filter: blur(8px);
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.announcement-modal.show {
+    display: flex;
+}
+
+.announcement-modal-box {
+    width: 100%;
+    max-width: 520px;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(15,30,48,.96);
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.4);
+}
+
+body.light .announcement-modal-box {
+    background:
+        rgba(255,255,255,.97);
+
+    color: #172033;
+}
+
+.announcement-modal-box h2 {
+    margin: 0 0 20px;
+}
+
+.announcement-input-group {
+    margin-bottom: 16px;
+}
+
+.announcement-input-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    opacity: .6;
+}
+
+.announcement-input-group input,
+.announcement-input-group textarea,
+.announcement-input-group select {
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    background:
+        rgba(255,255,255,.07);
+
+    color: inherit;
+
+    outline: none;
+
+    font-family: Arial, sans-serif;
+}
+
+.announcement-input-group textarea {
+    min-height: 110px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+.announcement-input-group input:focus,
+.announcement-input-group textarea:focus,
+.announcement-input-group select:focus {
+    border-color: #00c6ff;
+
+    box-shadow:
+        0 0 0 3px rgba(0,198,255,.10);
+}
+
+body.light .announcement-input-group input,
+body.light .announcement-input-group textarea,
+body.light .announcement-input-group select {
+    background:
+        rgba(255,255,255,.8);
+
+    color: #172033;
+
+    border-color:
+        rgba(0,0,0,.10);
+}
+
+.announcement-modal-actions {
+    display: flex;
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.announcement-modal-actions button {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.announcement-save-btn {
+    background:
+        linear-gradient(
+            135deg,
+            #2478e8,
+            #00b8e8
+        );
+
+    color: white;
+    font-weight: bold;
+}
+
+.announcement-cancel-btn {
+    background:
+        rgba(255,255,255,.08);
+
+    color: inherit;
+}
+
+body.light .announcement-cancel-btn {
+    background:
+        rgba(0,0,0,.06);
+}
+
+@media(max-width:600px) {
+
+    .admin-announcement {
+        flex-direction: column;
+    }
+
+    .delete-announcement-btn {
+        width: 100%;
+    }
+
+}
+
     </style>
 
 </head>
@@ -1126,6 +1418,143 @@ body.light .reply-section textarea {
 
         </section>
 
+<!-- ANNOUNCEMENT MANAGEMENT -->
+
+<section class="card announcement-management">
+
+    <div class="card-header">
+
+        <h2>
+            📢 Announcements
+        </h2>
+
+        <button
+            class="announcement-create-btn"
+            onclick="openAnnouncementModal()"
+        >
+            ➕ Create Announcement
+        </button>
+
+    </div>
+
+    <div id="adminAnnouncementList">
+
+        <div class="empty">
+            Loading announcements...
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CREATE ANNOUNCEMENT MODAL -->
+
+<div
+    id="announcementModal"
+    class="announcement-modal"
+    onclick="closeAnnouncementOutside(event)"
+>
+
+    <div
+        class="announcement-modal-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <h2>
+            📢 Create Announcement
+        </h2>
+
+
+        <div class="announcement-input-group">
+
+            <label>
+                Announcement Title
+            </label>
+
+            <input
+                type="text"
+                id="announcementTitle"
+                placeholder="Example: New HR Policy"
+            >
+
+        </div>
+
+
+        <div class="announcement-input-group">
+
+            <label>
+                Message
+            </label>
+
+            <textarea
+                id="announcementMessage"
+                placeholder="Write announcement details..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="announcement-input-group">
+
+            <label>
+                Icon
+            </label>
+
+            <select id="announcementIcon">
+
+                <option value="📢">
+                    📢 Announcement
+                </option>
+
+                <option value="🎉">
+                    🎉 Celebration
+                </option>
+
+                <option value="⚠️">
+                    ⚠️ Important
+                </option>
+
+                <option value="📅">
+                    📅 Schedule
+                </option>
+
+                <option value="🏢">
+                    🏢 Company
+                </option>
+
+                <option value="📄">
+                    📄 Policy
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="announcement-modal-actions">
+
+            <button
+                class="announcement-cancel-btn"
+                onclick="closeAnnouncementModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                class="announcement-save-btn"
+                onclick="createAnnouncement()"
+            >
+                📢 Publish Announcement
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+        
+
 <!-- TICKET DETAILS MODAL -->
 
 <div
@@ -1230,6 +1659,354 @@ body.light .reply-section textarea {
             isLight ? "🌙" : "☀️";
     }
 
+/* ============================
+   ANNOUNCEMENTS
+============================ */
+
+function getAnnouncements() {
+
+    return JSON.parse(
+        localStorage.getItem("hr-announcements") || "[]"
+    );
+
+}
+
+
+function saveAnnouncements(announcements) {
+
+    localStorage.setItem(
+        "hr-announcements",
+        JSON.stringify(announcements)
+    );
+
+}
+
+
+/* ============================
+   LOAD ANNOUNCEMENTS
+============================ */
+
+function loadAdminAnnouncements() {
+
+    const announcements =
+        getAnnouncements();
+
+    const container =
+        document.getElementById(
+            "adminAnnouncementList"
+        );
+
+
+    if (announcements.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div style="font-size:45px;">
+                    📢
+                </div>
+
+                <h3>
+                    No announcements yet
+                </h3>
+
+                <p>
+                    Create an announcement for employees.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <div class="announcement-list">
+
+            ${
+                announcements
+                    .slice()
+                    .reverse()
+                    .map((announcement, reverseIndex) => {
+
+                        const realIndex =
+                            announcements.length -
+                            1 -
+                            reverseIndex;
+
+
+                        return `
+
+                            <div
+                                class="admin-announcement"
+                            >
+
+                                <div
+                                    class="admin-announcement-content"
+                                >
+
+                                    <div
+                                        class="admin-announcement-title"
+                                    >
+                                        ${escapeHtml(
+                                            announcement.icon || "📢"
+                                        )}
+
+                                        ${escapeHtml(
+                                            announcement.title
+                                        )}
+                                    </div>
+
+
+                                    <div
+                                        class="admin-announcement-message"
+                                    >
+                                        ${escapeHtml(
+                                            announcement.message
+                                        )}
+                                    </div>
+
+
+                                    <div
+                                        class="admin-announcement-time"
+                                    >
+                                        🕐 ${escapeHtml(
+                                            announcement.createdAt || ""
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <button
+                                    class="delete-announcement-btn"
+                                    onclick="deleteAnnouncement(${realIndex})"
+                                >
+                                    🗑 Delete
+                                </button>
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("")
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================
+   OPEN CREATE MODAL
+============================ */
+
+function openAnnouncementModal() {
+
+    document
+        .getElementById("announcementModal")
+        .classList.add("show");
+
+
+    document
+        .getElementById("announcementTitle")
+        .value = "";
+
+
+    document
+        .getElementById("announcementMessage")
+        .value = "";
+
+
+    document
+        .getElementById("announcementIcon")
+        .value = "📢";
+
+
+    setTimeout(() => {
+
+        document
+            .getElementById("announcementTitle")
+            .focus();
+
+    }, 100);
+
+}
+
+
+/* ============================
+   CLOSE CREATE MODAL
+============================ */
+
+function closeAnnouncementModal() {
+
+    document
+        .getElementById("announcementModal")
+        .classList.remove("show");
+
+}
+
+
+function closeAnnouncementOutside(event) {
+
+    if (
+        event.target.id ===
+        "announcementModal"
+    ) {
+
+        closeAnnouncementModal();
+
+    }
+
+}
+
+
+/* ============================
+   CREATE ANNOUNCEMENT
+============================ */
+
+function createAnnouncement() {
+
+    const title =
+        document
+            .getElementById("announcementTitle")
+            .value
+            .trim();
+
+
+    const message =
+        document
+            .getElementById("announcementMessage")
+            .value
+            .trim();
+
+
+    const icon =
+        document
+            .getElementById("announcementIcon")
+            .value;
+
+
+    if (!title) {
+
+        alert(
+            "Please enter an announcement title."
+        );
+
+        return;
+    }
+
+
+    if (!message) {
+
+        alert(
+            "Please enter the announcement message."
+        );
+
+        return;
+    }
+
+
+    const announcements =
+        getAnnouncements();
+
+
+    announcements.push({
+
+        id:
+            "ANN-" +
+            Date.now(),
+
+        title:
+            title,
+
+        message:
+            message,
+
+        icon:
+            icon || "📢",
+
+        createdAt:
+            new Date().toLocaleString()
+
+    });
+
+
+    saveAnnouncements(
+        announcements
+    );
+
+
+    closeAnnouncementModal();
+
+
+    loadAdminAnnouncements();
+
+
+    alert(
+        "✅ Announcement published successfully!"
+    );
+
+}
+
+
+/* ============================
+   DELETE ANNOUNCEMENT
+============================ */
+
+function deleteAnnouncement(index) {
+
+    const announcements =
+        getAnnouncements();
+
+
+    if (!announcements[index]) {
+        return;
+    }
+
+
+    const title =
+        announcements[index].title;
+
+
+    const confirmed =
+        confirm(
+            `Delete announcement "${title}"?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    announcements.splice(
+        index,
+        1
+    );
+
+
+    saveAnnouncements(
+        announcements
+    );
+
+
+    loadAdminAnnouncements();
+
+
+    alert(
+        "🗑 Announcement deleted."
+    );
+
+}
+    
 
     /* ============================
        LOAD TICKETS
@@ -2145,6 +2922,7 @@ body.light .reply-section textarea {
     ============================ */
 
     displayTickets();
+    loadAdminAnnouncements();
 
 </script>
 
