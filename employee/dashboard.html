@@ -1077,7 +1077,48 @@ body.light .announcement-count {
     </main>
 
 </div>
+<!-- ANNOUNCEMENT DETAIL MODAL -->
 
+<div id="announcementDetailModal"
+     class="modal"
+     onclick="closeAnnouncementDetailOutside(event)">
+
+    <div class="modal-box announcement-detail-box"
+         onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+
+            <h2 id="announcementDetailTitle">
+                📢 Announcement
+            </h2>
+
+            <button class="close-btn"
+                    onclick="closeAnnouncementDetail()">
+                ✕
+            </button>
+
+        </div>
+
+        <div class="announcement-detail-content">
+
+            <div id="announcementDetailIcon"
+                 class="announcement-detail-icon">
+                📢
+            </div>
+
+            <div id="announcementDetailMessage"
+                 class="announcement-detail-message">
+            </div>
+
+            <div id="announcementDetailTime"
+                 class="announcement-detail-time">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -1487,50 +1528,7 @@ function closeAnnouncementDetailOutside(event) {
     /* LOAD DASHBOARD */
 
     loadDashboardTickets();
-
-    <!-- ANNOUNCEMENT DETAIL MODAL -->
-
-<div id="announcementDetailModal"
-     class="modal"
-     onclick="closeAnnouncementDetailOutside(event)">
-
-    <div class="modal-box announcement-detail-box"
-         onclick="event.stopPropagation()">
-
-        <div class="modal-header">
-
-            <h2 id="announcementDetailTitle">
-                📢 Announcement
-            </h2>
-
-            <button class="close-btn"
-                    onclick="closeAnnouncementDetail()">
-                ✕
-            </button>
-
-        </div>
-
-        <div class="announcement-detail-content">
-
-            <div id="announcementDetailIcon"
-                 class="announcement-detail-icon">
-                📢
-            </div>
-
-            <div id="announcementDetailMessage"
-                 class="announcement-detail-message">
-            </div>
-
-            <div id="announcementDetailTime"
-                 class="announcement-detail-time">
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-    
+   
 
     /* LOGOUT */
 
