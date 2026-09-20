@@ -738,7 +738,7 @@ body.light .cancel-btn {
 </div>
 
 
-    <!-- PASSWORD MODAL -->
+   <!-- PASSWORD MODAL -->
 
 <div
     class="modal"
@@ -755,27 +755,37 @@ body.light .cancel-btn {
             🔐 Change Password
         </h2>
 
+
+        <!-- CURRENT PASSWORD -->
+
         <div class="input-group">
 
             <label>
                 Current Password
             </label>
 
-            <input
-        type="password"
-        id="currentPassword"
-        placeholder="Enter current password"
-    >
+            <div class="password-field">
 
-    <button
-        type="button"
-        class="password-toggle"
-        onclick="togglePassword('currentPassword', this)"
-    >
-        👁️
-    </button>
+                <input
+                    type="password"
+                    id="currentPassword"
+                    placeholder="Enter current password"
+                >
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword('currentPassword', this)"
+                >
+                    👁️
+                </button>
+
+            </div>
 
         </div>
+
+
+        <!-- NEW PASSWORD -->
 
         <div class="input-group">
 
@@ -783,21 +793,28 @@ body.light .cancel-btn {
                 New Password
             </label>
 
-            <input
-        type="password"
-        id="newPassword"
-        placeholder="Enter new password"
-    >
+            <div class="password-field">
 
-    <button
-        type="button"
-        class="password-toggle"
-        onclick="togglePassword('newPassword', this)"
-    >
-        👁️
-    </button>
+                <input
+                    type="password"
+                    id="newPassword"
+                    placeholder="Enter new password"
+                >
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword('newPassword', this)"
+                >
+                    👁️
+                </button>
+
+            </div>
 
         </div>
+
+
+        <!-- CONFIRM PASSWORD -->
 
         <div class="input-group">
 
@@ -805,21 +822,28 @@ body.light .cancel-btn {
                 Confirm New Password
             </label>
 
-            <input
-        type="password"
-        id="confirmPassword"
-        placeholder="Confirm new password"
-    >
+            <div class="password-field">
 
-    <button
-        type="button"
-        class="password-toggle"
-        onclick="togglePassword('confirmPassword', this)"
-    >
-        👁️
-    </button>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm new password"
+                >
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword('confirmPassword', this)"
+                >
+                    👁️
+                </button>
+
+            </div>
 
         </div>
+
+
+        <!-- BUTTONS -->
 
         <div class="modal-actions">
 
