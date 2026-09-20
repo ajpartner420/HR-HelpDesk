@@ -1807,7 +1807,29 @@ function sendAdminReply() {
         Save admin reply
     */
 
-    tickets[ticketIndex].adminReply = reply;
+    if (!Array.isArray(tickets[ticketIndex].adminReplies)) {
+    tickets[ticketIndex].adminReplies = [];
+
+    if (tickets[ticketIndex].adminReply) {
+        tickets[ticketIndex].adminReplies.push({
+            text: tickets[ticketIndex].adminReply,
+            createdAt:
+                tickets[ticketIndex].adminReplyAt
+                || new Date().toLocaleString()
+        });
+    }
+}
+
+tickets[ticketIndex].adminReplies.push({
+    text: reply,
+    createdAt: new Date().toLocaleString()
+});
+
+/* Keep latest reply for compatibility */
+tickets[ticketIndex].adminReply = reply;
+
+tickets[ticketIndex].adminReplyAt =
+    new Date().toLocaleString();
 
     tickets[ticketIndex].adminReplyAt =
         new Date().toLocaleString();
