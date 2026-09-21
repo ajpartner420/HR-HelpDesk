@@ -266,67 +266,6 @@ if (selectedRole === "employee") {
 );
 
 
-/* ---------- FORGOT PASSWORD ---------- */
-
-document
-    .getElementById("forgotPassword")
-    .addEventListener("click", async function () {
-
-        const enteredEmail =
-            email.value.trim().toLowerCase();
-
-        if (!enteredEmail) {
-
-            showMessage(
-                "Please enter your email first.",
-                "error"
-            );
-
-            email.focus();
-
-            return;
-        }
-
-        try {
-
-            const { error } =
-                await supabaseClient.auth
-                    .resetPasswordForEmail(
-                        enteredEmail,
-                        {
-                            redirectTo:
-                                window.location.origin +
-                                "/HR-HelpDesk/reset-password.html"
-                        }
-                    );
-
-            if (error) {
-
-                showMessage(
-                    error.message,
-                    "error"
-                );
-
-                return;
-            }
-
-            showMessage(
-                "Password reset email sent. Please check your inbox.",
-                "success"
-            );
-
-        } catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                "Unable to send password reset email.",
-                "error"
-            );
-        }
-
-    });
-
 /* ---------- MESSAGE ---------- */
 
 function showMessage(text, type) {
