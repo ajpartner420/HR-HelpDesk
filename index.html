@@ -7,6 +7,9 @@
     <title>HR Helpdesk | Login</title>
 
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -125,6 +128,7 @@
                 <div class="role-selector">
 
                     <button
+                        type="button"
                         class="role-btn active"
                         data-role="employee"
                     >
@@ -132,6 +136,7 @@
                     </button>
 
                     <button
+                        type="button"
                         class="role-btn"
                         data-role="admin"
                     >
@@ -154,7 +159,7 @@
                     <div class="input-group">
 
                         <label for="email">
-                            Email / Employee ID
+                            Email
                         </label>
 
                         <div class="input-wrapper">
@@ -164,9 +169,9 @@
                             </span>
 
                             <input
-                                type="text"
+                                type="email"
                                 id="email"
-                                placeholder="employee@company.com"
+                                placeholder="your@email.com"
                                 autocomplete="username"
                                 required
                             >
@@ -258,17 +263,17 @@
                 <div class="demo-login">
 
                     <div class="demo-title">
-                        🧪 Demo Account
+                        🔐 Supabase Login
                     </div>
 
                     <div id="demoDetails">
 
                         <span>
-                            Employee:
+                            Use:
                         </span>
 
                         <strong>
-                            employee@hrhelpdesk.com
+                            Your registered email
                         </strong>
 
                         <br>
@@ -278,7 +283,7 @@
                         </span>
 
                         <strong>
-                            employee123
+                            Your Supabase password
                         </strong>
 
                     </div>
@@ -310,6 +315,341 @@
 
 
     <script src="js/theme.js"></script>
+
+
+    <!-- Supabase Login -->
+    <script>
+
+        /* =====================================================
+           SUPABASE CONFIGURATION
+           ===================================================== */
+
+        const SUPABASE_URL = "https://rhrsduambtsftirevxma.supabase.co";
+
+        const SUPABASE_ANON_KEY = "sb_publishable_c6cX-qZSCU87RDFBqApG8g_OFTkf3fk";
+
+        const supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+        /* =====================================================
+           VARIABLES
+           ===================================================== */
+
+        let selectedRole = "employee";
+
+
+        /* =====================================================
+           ROLE SELECTOR
+           ===================================================== */
+
+        const roleButtons = document.querySelectorAll(".role-btn");
+
+        roleButtons.forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                roleButtons.forEach(btn => {
+                    btn.classList.remove("active");
+                });
+
+                this.classList.add("active");
+
+                selectedRole = this.dataset.role;
+
+            });
+
+        });
+
+
+        /* =====================================================
+           PASSWORD SHOW / HIDE
+           ===================================================== */
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        passwordToggle.addEventListener("click", function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                passwordToggle.textContent = "🙈";
+
+            } else {
+
+                passwordInput.type = "password";
+                passwordToggle.textContent = "👁";
+
+            }
+
+        });
+
+
+        /* =====================================================
+           LOGIN MESSAGE
+           ===================================================== */
+
+        function showLoginMessage(message, type = "error") {
+
+            const messageBox =
+                document.getElementById("loginMessage");
+
+            messageBox.textContent = message;
+
+            messageBox.className =
+                "login-message " + type;
+
+        }
+
+
+        /* =====================================================
+           LOGIN
+           ===================================================== */
+
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", async function (event) {
+
+                event.preventDefault();
+
+                const email =
+                    document.getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document.getElementById("password")
+                        .value;
+
+                if (!email || !password) {
+
+                    showLoginMessage(
+                        "Please enter email and password."
+                    );
+
+                    return;
+                }
+
+
+                showLoginMessage(
+                    "Signing in...",
+                    "success"
+                );
+
+
+                try {
+
+                    const { data, error } =
+                        await supabaseClient.auth.signInWithPassword({
+
+                            email: email,
+
+                            password: password
+
+                        });
+
+
+                    if (error) {
+
+                        showLoginMessage(
+                            error.message
+                        );
+
+                        return;
+                    }
+
+
+                    if (!data.user) {
+
+                        showLoginMessage(
+                            "Login failed. Please try again."
+                        );
+
+                        return;
+                    }
+
+
+                    /* =========================================
+                       GET USER PROFILE
+                       ========================================= */
+
+                    const { data: profile, error: profileError } =
+                        await supabaseClient
+                            .from("profiles")
+                            .select("id,email,full_name,role")
+                            .eq("id", data.user.id)
+                            .single();
+
+
+                    if (profileError || !profile) {
+
+                        await supabaseClient.auth.signOut();
+
+                        showLoginMessage(
+                            "Profile not found. Please contact HR."
+                        );
+
+                        return;
+                    }
+
+
+                    /* =========================================
+                       CHECK SELECTED ROLE
+                       ========================================= */
+
+                    if (profile.role !== selectedRole) {
+
+                        await supabaseClient.auth.signOut();
+
+                        showLoginMessage(
+                            "You selected " +
+                            selectedRole +
+                            " login, but this account is registered as " +
+                            profile.role +
+                            "."
+                        );
+
+                        return;
+                    }
+
+
+                    /* =========================================
+                       SAVE LOGIN INFO
+                       ========================================= */
+
+                    localStorage.setItem(
+                        "hr-user-role",
+                        profile.role
+                    );
+
+                    localStorage.setItem(
+                        "hr-user-email",
+                        profile.email
+                    );
+
+                    localStorage.setItem(
+                        "hr-user-name",
+                        profile.full_name
+                    );
+
+
+                    /* =========================================
+                       REDIRECT
+                       ========================================= */
+
+                    showLoginMessage(
+                        "Login successful. Redirecting...",
+                        "success"
+                    );
+
+
+                    setTimeout(function () {
+
+                        if (profile.role === "admin") {
+
+                            window.location.href =
+                                "admin/dashboard.html";
+
+                        } else {
+
+                            window.location.href =
+                                "employee/dashboard.html";
+
+                        }
+
+                    }, 500);
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showLoginMessage(
+                        "Something went wrong. Please try again."
+                    );
+
+                }
+
+            });
+
+
+        /* =====================================================
+           FORGOT PASSWORD
+           ===================================================== */
+
+        document
+            .getElementById("forgotPassword")
+            .addEventListener("click", async function () {
+
+                const email =
+                    document.getElementById("email")
+                        .value
+                        .trim();
+
+
+                if (!email) {
+
+                    showLoginMessage(
+                        "Please enter your email first."
+                    );
+
+                    document
+                        .getElementById("email")
+                        .focus();
+
+                    return;
+                }
+
+
+                try {
+
+                    const { error } =
+                        await supabaseClient.auth
+                            .resetPasswordForEmail(email, {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/HR-HelpDesk/reset-password.html"
+
+                            });
+
+
+                    if (error) {
+
+                        showLoginMessage(
+                            error.message
+                        );
+
+                        return;
+                    }
+
+
+                    showLoginMessage(
+                        "Password reset email sent. Please check your inbox.",
+                        "success"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showLoginMessage(
+                        "Unable to send password reset email."
+                    );
+
+                }
+
+            });
+
+
+    </script>
 
 </body>
 </html>
